@@ -3557,7 +3557,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       addMixinReference(postNode, true);
       
       //
-      forumNode.getSession().save(); 
+      topicNode.getSession().save(); 
       
       post.setPath(postNode.getPath());
       
