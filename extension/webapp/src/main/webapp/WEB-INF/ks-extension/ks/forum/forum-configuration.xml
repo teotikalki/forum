@@ -31,6 +31,38 @@
     <type>org.exoplatform.forum.service.ws.ForumWebservice</type>
   </component>
   
+  <!-- REST CRUD APIs -->
+  
+  <component>
+    <type>org.exoplatform.forum.service.rest.category.impl.CategoryForumRestServiceV1</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.forum.service.rest.forum.impl.ForumForumRestServiceV1</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.forum.service.rest.topic.impl.TopicForumRestServiceV1</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.forum.service.rest.post.impl.PostForumRestServiceV1</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.forum.service.rest.poll.impl.PollForumRestServiceV1</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.forum.service.rest.vote.impl.VoteForumRestServiceV1</type>
+  </component>
+  
+  <component>
+    <type>org.exoplatform.forum.service.rest.attachment.impl.AttachmentForumRestServiceV1</type>
+  </component>
+  
+  <!-- END - REST CRUD APIs -->
+  
   <component>
     <key>org.exoplatform.forum.service.task.QueryLastPostTaskManager</key>
     <type>org.exoplatform.forum.service.task.QueryLastPostTaskManager</type>
