@@ -22,8 +22,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.exoplatform.forum.service.rest.AbstractForumRest;
 
-public interface CategoryForumRest extends AbstractForumRest {
+
+public interface CategoryForumRestService extends AbstractForumRest {
 
   /**
    * Process to return all categories in json format

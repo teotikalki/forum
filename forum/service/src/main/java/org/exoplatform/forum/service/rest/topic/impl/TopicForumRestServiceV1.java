@@ -4,20 +4,27 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
-import org.exoplatform.forum.service.rest.api.TopicForumRest;
+import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
+import org.exoplatform.forum.service.rest.api.TopicForumRestService;
 
 @Path("v1/forum/topics")
-public class TopicForumRestServiceV1 implements TopicForumRest {
+public class TopicForumRestServiceV1 extends AbstractForumRestServiceImpl implements TopicForumRestService {
 
   @GET
   public Response getTopics(@Context UriInfo uriInfo,
                              @QueryParam("returnSize") boolean returnSize,
                              @QueryParam("offset") int offset,
                              @QueryParam("limit") int limit) throws Exception {
-    System.out.println("TopicForumRestServiceV1");
-    return null;
+    try {
+
+      return Response.ok(null, MediaType.APPLICATION_XML).cacheControl(cc).build();
+    } catch (Exception e) {
+      return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
   }
 }

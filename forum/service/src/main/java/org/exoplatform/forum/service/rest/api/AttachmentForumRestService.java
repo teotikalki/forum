@@ -6,8 +6,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.exoplatform.forum.service.rest.AbstractForumRest;
 
-public interface AttachmentForumRest extends AbstractForumRest {
+
+public interface AttachmentForumRestService extends AbstractForumRest {
 
   /**
    * Process to return all attachments in json format
