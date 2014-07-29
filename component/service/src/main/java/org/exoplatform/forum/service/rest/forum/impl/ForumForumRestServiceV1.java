@@ -1,5 +1,7 @@
 package org.exoplatform.forum.service.rest.forum.impl;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -13,6 +15,9 @@ import javax.ws.rs.core.Response.Status;
 
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
 import org.exoplatform.forum.service.rest.api.ForumForumRestService;
+import org.exoplatform.forum.service.rest.model.AbstractListJson;
+import org.exoplatform.forum.service.rest.model.CategoryJson;
+import org.exoplatform.forum.service.rest.model.ForumJson;
 
 @Path("v1/forum")
 public class ForumForumRestServiceV1 extends AbstractForumRestServiceImpl implements ForumForumRestService {
@@ -31,4 +36,13 @@ public class ForumForumRestServiceV1 extends AbstractForumRestServiceImpl implem
       return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
   }
+  
+  public class ResultForums extends AbstractListJson {
+    List<ForumJson> forums;
+
+    public ResultForums(List<ForumJson> jsons) {
+      forums = jsons;
+    }
+  }
+
 }

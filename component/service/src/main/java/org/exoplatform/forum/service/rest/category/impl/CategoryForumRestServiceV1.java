@@ -17,6 +17,7 @@ import javax.ws.rs.core.UriInfo;
 import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
 import org.exoplatform.forum.service.rest.api.CategoryForumRestService;
+import org.exoplatform.forum.service.rest.model.AbstractListJson;
 import org.exoplatform.forum.service.rest.model.CategoryJson;
 
 @Path("v1/forum")
@@ -33,12 +34,28 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       List<CategoryJson> jsons = new ArrayList<CategoryJson>();
 
       CategoryJson json = new CategoryJson(new Category());
-
+      json.setHref("");
+      
       jsons.add(json);
-
-      return Response.ok(jsons, MediaType.APPLICATION_JSON).cacheControl(cc).build();
+      
+      ResultCategories result = new ResultCategories(jsons);
+      result.setLimit(limit);
+      result.setOffset(offset);
+      if (returnSize) {
+        result.setSize(jsons.size());
+      }
+      
+      return Response.ok(result, MediaType.APPLICATION_JSON).cacheControl(cc).build();
     } catch (Exception e) {
       return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
+  public class ResultCategories extends AbstractListJson {
+    List<CategoryJson> categories;
+
+    public ResultCategories(List<CategoryJson> jsons) {
+      categories = jsons;
     }
   }
 

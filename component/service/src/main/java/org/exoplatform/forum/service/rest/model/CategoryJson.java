@@ -19,13 +19,15 @@ package org.exoplatform.forum.service.rest.model;
 import org.exoplatform.forum.service.Category;
 
 public class CategoryJson extends AbstractJson {
-  private String position;
-  private String[] moderators;
-  private String[] topicCreators;
-  private String[] posters;
-  private String[] viewers;
-  private String[] userPrivates;
-  
+  private static final long serialVersionUID = 1L;
+
+  private final String position;
+  private final String[] moderators;
+  private final String[] topicCreators;
+  private final String[] posters;
+  private final String[] viewers;
+  private final String[] userPrivates;
+
   public CategoryJson(Category cat) {
     this.id = cat.getId();
     this.position = String.valueOf(cat.getCategoryOrder());
@@ -34,5 +36,17 @@ public class CategoryJson extends AbstractJson {
     this.owner = cat.getOwner();
     this.createdDate = cat.getCreatedDate();
     this.updatedDate = cat.getModifiedDate();
+    //
+    this.userPrivates = cat.getUserPrivate();
+    this.moderators = cat.getModerators();
+    this.topicCreators = cat.getCreateTopicRole();
+    this.posters = cat.getPoster();
+    this.viewers = cat.getViewer();
   }
+
+  public CategoryJson(Category cat, String href) {
+    this(cat);
+    setHref(href);
+  }
+  
 }

@@ -14,14 +14,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.forum.service.rest.model;
+package org.exoplatform.forum.service.rest;
 
-import org.exoplatform.forum.service.Post;
+public class RestUtils {
 
-public class PostJson extends AbstractJson {
-  private static final long serialVersionUID = 1L;
-  
-  private String message;
-  public PostJson(Post post) {
-  }
 }

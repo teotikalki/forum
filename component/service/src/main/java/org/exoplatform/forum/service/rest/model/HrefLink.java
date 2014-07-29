@@ -16,12 +16,15 @@
  */
 package org.exoplatform.forum.service.rest.model;
 
-import org.exoplatform.forum.service.Post;
+import java.util.HashMap;
 
-public class PostJson extends AbstractJson {
+public class HrefLink extends HashMap<String, Object> {
   private static final long serialVersionUID = 1L;
-  
-  private String message;
-  public PostJson(Post post) {
+
+  public HrefLink() {
+  }
+
+  public HrefLink(String href) {
+    put("href", href);
   }
 }

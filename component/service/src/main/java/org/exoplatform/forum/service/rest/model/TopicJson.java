@@ -19,7 +19,8 @@ package org.exoplatform.forum.service.rest.model;
 import org.exoplatform.forum.service.Topic;
 
 public class TopicJson extends AbstractJson {
-  private Href forum;
+  private static final long serialVersionUID = 1L;
+  private HrefLink forum;
 
   private String closed;
   private String locked;
@@ -34,10 +35,21 @@ public class TopicJson extends AbstractJson {
   
   private String rating;
   
-  private Href usersRatings;
-  private Href poll;
+  private HrefLink usersRatings;
+  private HrefLink poll;
   
   public TopicJson(Topic topic) {
   }
-  
+
+  public void setForum(HrefLink forum) {
+    this.forum = forum;
+  }
+
+  public void setUsersRatings(HrefLink usersRatings) {
+    this.usersRatings = usersRatings;
+  }
+
+  public void setPoll(HrefLink poll) {
+    this.poll = poll;
+  }
 }

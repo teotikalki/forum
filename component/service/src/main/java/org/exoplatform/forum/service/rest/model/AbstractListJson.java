@@ -16,12 +16,35 @@
  */
 package org.exoplatform.forum.service.rest.model;
 
-import org.exoplatform.forum.service.Post;
 
-public class PostJson extends AbstractJson {
-  private static final long serialVersionUID = 1L;
-  
-  private String message;
-  public PostJson(Post post) {
+public abstract class AbstractListJson {
+
+  private int size   = -1;
+  private int limit  = -1;
+  private int offset = 0;
+
+  public int getSize() {
+    return size;
   }
+
+  public void setSize(int size) {
+    this.size = size;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public void setLimit(int limit) {
+    this.limit = limit;
+  }
+
+  public int getOffset() {
+    return offset;
+  }
+
+  public void setOffset(int offset) {
+    this.offset = offset;
+  }
+
 }

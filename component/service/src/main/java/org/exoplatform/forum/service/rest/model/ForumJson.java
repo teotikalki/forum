@@ -19,7 +19,9 @@ package org.exoplatform.forum.service.rest.model;
 import org.exoplatform.forum.service.Forum;
 
 public class ForumJson extends AbstractJson {
-  private Href category;
+  private static final long serialVersionUID = 1L;
+
+  private HrefLink category;
   private String position;
   private String closed;
   private String locked;
