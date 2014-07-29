@@ -2058,4 +2058,18 @@ public class CachedDataStorage implements DataStorage, Startable {
   public void removeCacheUserProfile(String userName) {
     clearUserProfile(userName);
   }
+
+  @Override
+  public List<Category> getCategories(final CategoryFilter filter, final int offset, final int limit) {
+    return buildCategoryOutput(categoryListFuture.get(new ServiceContext<ListCategoryData>() {
+      public ListCategoryData execute() {
+        return buildCategoryInput(storage.getCategories(filter, offset, limit));
+      }
+    }, new CategoryListKey(filter, offset, limit)));
+  }
+
+  @Override
+  public int getCategoriesCount(CategoryFilter filter) {
+    return storage.getCategoriesCount(filter);
+  }
 }

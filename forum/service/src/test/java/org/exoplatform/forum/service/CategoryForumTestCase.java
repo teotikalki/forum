@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.forum.base.BaseForumServiceTestCase;
 import org.exoplatform.forum.service.filter.model.CategoryFilter;
 
@@ -25,6 +26,33 @@ public class CategoryForumTestCase extends BaseForumServiceTestCase {
     super.tearDown();
   }
 
+  public void testGetCategoryWithListAccess() throws Exception {
+    String[] catIds = new String[] { getId(Utils.CATEGORY), getId(Utils.CATEGORY), getId(Utils.CATEGORY) };
+    // add category
+    for (int i = 0; i < catIds.length; i++) {
+      forumService_.saveCategory(createCategory(catIds[i]), true);
+    }
+    
+    CategoryFilter filter = new CategoryFilter();
+    ListAccess<Category> listAccess = forumService_.getCategoriesWithListAccess(filter);
+    assertEquals(3, listAccess.getSize());
+    assertEquals(3, listAccess.load(0, 5).length);
+    
+    filter.setCategoryName("testCat");
+    listAccess = forumService_.getCategoriesWithListAccess(filter);
+    assertEquals(3, listAccess.getSize());
+    assertEquals(3, listAccess.load(0, 5).length);
+    
+    filter.setCategoryName("abc");
+    listAccess = forumService_.getCategoriesWithListAccess(filter);
+    assertEquals(0, listAccess.getSize());
+    assertEquals(0, listAccess.load(0, 5).length);
+    
+    //clean data
+    for (int i = 0; i < catIds.length; i++) {
+      forumService_.removeCategory(catIds[i]);
+    }
+  }
 
   public void testCategory() throws Exception {
     String[] catIds = new String[] { getId(Utils.CATEGORY), getId(Utils.CATEGORY), getId(Utils.CATEGORY) };

@@ -16,6 +16,11 @@ import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityConstants;
 
 public abstract class AbstractForumRestServiceImpl {
+  
+  public static final int             DEFAULT_LIMIT  = 20;
+  public static final int             HARD_LIMIT     = 50;
+  public static final int             DEFAULT_OFFSET = 0;
+  public static final String          CATEGORIES     = "categories";
 
   protected static final CacheControl cc;
   static {

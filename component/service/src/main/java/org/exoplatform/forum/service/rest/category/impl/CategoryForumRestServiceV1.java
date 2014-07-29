@@ -14,8 +14,12 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
+import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.forum.service.Category;
+import org.exoplatform.forum.service.ForumService;
+import org.exoplatform.forum.service.filter.model.CategoryFilter;
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
+import org.exoplatform.forum.service.rest.RestUtils;
 import org.exoplatform.forum.service.rest.api.CategoryForumRestService;
 import org.exoplatform.forum.service.rest.model.AbstractListJson;
 import org.exoplatform.forum.service.rest.model.CategoryJson;
@@ -31,12 +35,19 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
                                 @QueryParam("offset") int offset,
                                 @QueryParam("limit") int limit) throws Exception {
     try {
-      List<CategoryJson> jsons = new ArrayList<CategoryJson>();
-
-      CategoryJson json = new CategoryJson(new Category());
-      json.setHref("");
       
-      jsons.add(json);
+      limit = limit <= 0 ? DEFAULT_LIMIT : Math.min(HARD_LIMIT, limit);
+      offset = offset < 0 ? DEFAULT_OFFSET : offset;
+
+      ForumService forumService = getForumService();
+      ListAccess<Category> listAccess = forumService.getCategoriesWithListAccess(new CategoryFilter());
+      Category[] categories = listAccess.load(offset, limit);
+      List<CategoryJson> jsons = new ArrayList<CategoryJson>();
+      for (int i = 0; i < categories.length; i++) {
+        CategoryJson json = new CategoryJson(categories[i]);
+        json.setHref(RestUtils.getRestUrl(CATEGORIES, categories[i].getId(), uriInfo.getPath()));
+        jsons.add(json);
+      }
       
       ResultCategories result = new ResultCategories(jsons);
       result.setLimit(limit);
@@ -52,7 +63,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   }
 
   public class ResultCategories extends AbstractListJson {
-    List<CategoryJson> categories;
+    public List<CategoryJson> categories;
 
     public ResultCategories(List<CategoryJson> jsons) {
       categories = jsons;

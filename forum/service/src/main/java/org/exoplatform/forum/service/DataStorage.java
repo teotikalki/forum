@@ -501,4 +501,22 @@ public interface DataStorage {
   public List<ForumSearchResult> getUnifiedSearch(String textQuery, String userId, Integer offset, Integer limit, String sort, String order) throws Exception;
   
   public List<String> getForumUserCanView(List<String> listOfUser, List<String> listForumIds) throws Exception ;
+  
+  /**
+   * Get list of categories by filter
+   * 
+   * @param filter
+   * @param offset
+   * @param limit
+   * @return
+   */
+  public List<Category> getCategories(CategoryFilter filter, int offset, int limit);
+  
+  /**
+   * Get number of categories by filter
+   * 
+   * @param filter
+   * @return
+   */
+  public int getCategoriesCount(CategoryFilter filter);
 }

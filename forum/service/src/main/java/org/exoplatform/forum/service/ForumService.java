@@ -1803,4 +1803,11 @@ public interface ForumService extends ForumServiceLegacy {
    */
   public String getCommentIdForOwnerPath(String ownerPath);
 
+  /**
+   * Gets listAccess of categories in Forums.
+   * 
+   * @param filter
+   * @return Categories.
+   */
+  ListAccess<Category> getCategoriesWithListAccess(CategoryFilter filter);
 }

@@ -16,9 +16,9 @@
  */
 package org.exoplatform.forum.service.rest.api;
 
-import java.util.List;
-
-import org.exoplatform.forum.service.rest.model.CategoryJson;
+import org.exoplatform.forum.service.Category;
+import org.exoplatform.forum.service.ForumService;
+import org.exoplatform.forum.service.rest.category.impl.CategoryForumRestServiceV1.ResultCategories;
 import org.exoplatform.forum.service.test.AbstractResourceTest;
 import org.exoplatform.services.rest.impl.ContainerResponse;
 
@@ -30,6 +30,7 @@ public class CategoryForumRestServiceTest extends AbstractResourceTest {
 
   public void setUp() throws Exception {
     super.setUp();
+    System.setProperty("gatein.email.domain.url", "localhost:8080");
     //
     categoryRestService = getService(CategoryForumRestService.class);
     registry(categoryRestService);
@@ -38,6 +39,7 @@ public class CategoryForumRestServiceTest extends AbstractResourceTest {
   }
 
   public void tearDown() throws Exception {
+    removeAllData();
     super.tearDown();
   }
   
@@ -46,14 +48,19 @@ public class CategoryForumRestServiceTest extends AbstractResourceTest {
   }
   
   public void testGetCategories() throws Exception  {
+    ForumService forumService = getService(ForumService.class);
+    Category category = forumService.getCategory(categoryId);
+    assertNotNull(category);
+    
     String eventURI = "/categories";
     ContainerResponse response = performTestCase("GET", eventURI);
     assertNotNull(response);
-    assertEquals(response.getStatus(), 200);
+    assertEquals(200, response.getStatus());
     
     // assert data
-    List<?> bean = (List<?>)response.getEntity();
-    assertEquals(bean.size(), 1);
-    assertTrue(bean.get(0) instanceof CategoryJson);
+    ResultCategories bean = (ResultCategories)response.getEntity();
+    assertEquals(1, bean.categories.size());
+    assertEquals("localhost:8080/rest/v1/forum/categories/" + category.getId(), bean.categories.get(0).getHref());
+    
   }
 }

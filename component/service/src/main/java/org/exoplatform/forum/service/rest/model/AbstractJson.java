@@ -31,9 +31,9 @@ public abstract class AbstractJson extends HrefLink {
 
   protected String description;
 
-  protected Date   createdDate;
+  protected String   createdDate;
 
-  protected Date   updatedDate;
+  protected String   updatedDate;
 
   public String getId() {
     return id;
@@ -75,19 +75,19 @@ public abstract class AbstractJson extends HrefLink {
     this.description = description;
   }
 
-  public Date getCreatedDate() {
+  public String getCreatedDate() {
     return createdDate;
   }
 
-  public void setCreatedDate(Date createdDate) {
+  public void setCreatedDate(String createdDate) {
     this.createdDate = createdDate;
   }
 
-  public Date getUpdatedDate() {
+  public String getUpdatedDate() {
     return updatedDate;
   }
 
-  public void setUpdatedDate(Date updatedDate) {
+  public void setUpdatedDate(String updatedDate) {
     this.updatedDate = updatedDate;
   }
 }

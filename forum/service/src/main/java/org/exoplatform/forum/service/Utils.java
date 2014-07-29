@@ -143,6 +143,25 @@ public class Utils implements ForumNodeTypes {
   public static final String DEFAULT_EMAIL_CONTENT = "Hi,</br> You receive this email because you registered for eXo Forum and Topic Watching notification." + "<br/>We would like to inform you that there is a new $ADD_TYPE in the $OBJECT_WATCH_TYPE <strong>$OBJECT_NAME</strong> with the following content: "
                                                        + "<div>_______________<br/>$POST_CONTENT<br/>_______________</div><div>At $TIME on $DATE, posted by <strong>$POSTER</strong> .</div><div>Go directly to the post: " + "<a target=\"_blank\" href=\"$VIEWPOST_LINK\">Click here.</a> <br/>Or go to reply to the post: <a target=\"_blank\" href=\"$REPLYPOST_LINK\">Click here." + "</a></div>".intern();
 
+  public enum COMPARATOR {
+    EQUALS, LIKE, CONTAINS;
+    
+    public StringBuilder buildQuery(StringBuilder builder, String property, String value) {
+      switch (this) {
+        case EQUALS: {
+          return builder.append(property).append("='").append(value).append("'");
+        }
+        case LIKE: {
+          return builder.append(property).append(" LIKE '%").append(value).append("%'");
+        }
+        case CONTAINS: {
+          return builder.append("CONTAINS (").append(property).append(", '").append(value).append("')");
+        }
+        default:
+          return builder;
+        }
+    }
+  }
   /**
    * Clear characters that have a codepoint < 31 (non printable) from a string
    * @param s string input
@@ -573,6 +592,22 @@ public class Utils implements ForumNodeTypes {
       .append(property).append(" IS NOT NULL");
     }
     return builder.toString();
+  }
+  
+  /**
+   * Add more condition for SQL query by property value and type
+   * 
+   * @param builder
+   * @param property
+   * @param value
+   * @param operation OR or AND
+   * @param type
+   */
+  public static void addMoreSQLQueryFilter(StringBuilder builder, String property, String value, String operation, COMPARATOR type) {
+    if (CommonUtils.isEmpty(value) || CommonUtils.isEmpty(property)) {
+      return ;
+    }
+    type.buildQuery(builder.append(operation), property, value);
   }
 
   /**

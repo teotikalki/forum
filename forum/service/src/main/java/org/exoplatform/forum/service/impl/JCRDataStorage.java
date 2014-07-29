@@ -111,6 +111,7 @@ import org.exoplatform.forum.service.Topic;
 import org.exoplatform.forum.service.TopicListAccess;
 import org.exoplatform.forum.service.UserProfile;
 import org.exoplatform.forum.service.Utils;
+import org.exoplatform.forum.service.Utils.COMPARATOR;
 import org.exoplatform.forum.service.Watch;
 import org.exoplatform.forum.service.cache.CachedDataStorage;
 import org.exoplatform.forum.service.conf.CategoryData;
@@ -8541,4 +8542,44 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
     return result.getNodes();
   }
   
+  private String buildGetCategoriesQueryByFilter(CategoryFilter filter) {
+    String categoryHomePath = "/" + dataLocator.getForumCategoriesLocation();
+    StringBuilder sqlQuery = jcrPathLikeAndNotLike(EXO_FORUM_CATEGORY, categoryHomePath);
+    Utils.addMoreSQLQueryFilter(sqlQuery, EXO_NAME, filter.getCategoryName(), " AND ", COMPARATOR.LIKE);
+    return sqlQuery.toString();
+  }
+  
+  public List<Category> getCategories(CategoryFilter filter, int offset, int limit) {
+    //
+    SessionProvider sProvider = CommonUtils.createSystemProvider();
+    try {
+      List<Category> categories = new ArrayList<Category>();
+      
+      NodeIterator iter = getNodeIteratorBySQLQuery(sProvider, buildGetCategoriesQueryByFilter(filter), offset, limit, false);
+      while (iter.hasNext()) {
+        Node cateNode = iter.nextNode();
+        try {
+          categories.add(getCategory(cateNode));
+        } catch (RepositoryException e) {
+          if (LOG.isDebugEnabled()) {
+            LOG.debug("Failed to get category" + cateNode.getName(), e);
+          }
+        }
+      }
+      return categories;
+    } catch (Exception e) {
+      LOG.debug("Failed to get the categories list ", e);
+    }
+    return null;
+  }
+  
+  public int getCategoriesCount(CategoryFilter filter) {
+    //
+    SessionProvider sProvider = CommonUtils.createSystemProvider();
+    try {
+      return (int) getNodeIteratorBySQLQuery(sProvider, buildGetCategoriesQueryByFilter(filter), 0, 0, false).getSize();
+    } catch (Exception e) {
+      return 0;
+    }
+  }
 }

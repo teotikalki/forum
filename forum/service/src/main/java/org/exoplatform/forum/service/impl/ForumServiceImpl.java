@@ -65,6 +65,7 @@ import org.exoplatform.forum.service.Utils;
 import org.exoplatform.forum.service.Watch;
 import org.exoplatform.forum.service.filter.model.CategoryFilter;
 import org.exoplatform.forum.service.filter.model.ForumFilter;
+import org.exoplatform.forum.service.impl.model.CategoryListAccess;
 import org.exoplatform.forum.service.impl.model.PostFilter;
 import org.exoplatform.forum.service.impl.model.PostListAccess;
 import org.exoplatform.forum.service.impl.model.TopicFilter;
@@ -1694,6 +1695,10 @@ public class ForumServiceImpl implements ForumService, Startable {
   @Override
   public ListAccess<UserProfile> searchUserProfileByFilter(UserProfileFilter userProfileFilter) throws Exception {
     return new UserProfileListAccess(storage, userProfileFilter);
+  }
+
+  public ListAccess<Category> getCategoriesWithListAccess(CategoryFilter filter) {
+    return new CategoryListAccess(storage, filter);
   }
 
 }

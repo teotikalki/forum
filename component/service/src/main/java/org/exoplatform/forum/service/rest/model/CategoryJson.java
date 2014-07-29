@@ -17,6 +17,7 @@
 package org.exoplatform.forum.service.rest.model;
 
 import org.exoplatform.forum.service.Category;
+import org.exoplatform.forum.service.rest.RestUtils;
 
 public class CategoryJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
@@ -34,8 +35,8 @@ public class CategoryJson extends AbstractJson {
     this.name = cat.getCategoryName();
     this.description = cat.getDescription();
     this.owner = cat.getOwner();
-    this.createdDate = cat.getCreatedDate();
-    this.updatedDate = cat.getModifiedDate();
+    this.createdDate = RestUtils.formatDateToISO8601(cat.getCreatedDate());
+    this.updatedDate = RestUtils.formatDateToISO8601(cat.getModifiedDate());
     //
     this.userPrivates = cat.getUserPrivate();
     this.moderators = cat.getModerators();
