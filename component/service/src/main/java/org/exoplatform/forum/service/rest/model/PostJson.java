@@ -21,7 +21,16 @@ import org.exoplatform.forum.service.Post;
 public class PostJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
   
+  private HrefLink topic;
+  private String title;
   private String message;
+  private String editReason;
+  private String hidden;
+  
+  private HrefLink[] attachments;
+  
   public PostJson(Post post) {
+    
+    
   }
 }

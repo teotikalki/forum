@@ -22,6 +22,7 @@ public class ForumJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
 
   private HrefLink category;
+  private String title;
   private String position;
   private String closed;
   private String locked;
@@ -39,6 +40,30 @@ public class ForumJson extends AbstractJson {
   private String[] bannedIPs;
 
   public ForumJson(Forum forum) {
+    this.name = forum.getForumName();
+    this.title = forum.getForumName();
+    this.position = String.valueOf(forum.getForumOrder());
+    this.closed = String.valueOf(forum.getIsClosed());
+    this.locked = String.valueOf(forum.getIsClosed());
+    this.autoAddEmailNotify = String.valueOf(forum.getIsClosed());
+    this.moderateTopic = String.valueOf(forum.getIsClosed());
+    this.moderatePost = String.valueOf(forum.getIsClosed());
+    //
+    this.moderators = forum.getModerators();
+    this.topicCreators = forum.getCreateTopicRole();
+    this.posters = forum.getPoster();
+    this.viewers = forum.getViewer();
+    this.bannedIPs = forum.getBanIP().toArray(new String[] {});
+    //
+    this.notifyWhenAddTopic = forum.getNotifyWhenAddTopic();
+    this.notifyWhenAddPost = forum.getNotifyWhenAddPost();
+    
   }
+
+  public void setCategory(HrefLink category) {
+    this.category = category;
+  }
+  
+  
   
 }
