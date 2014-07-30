@@ -16,9 +16,6 @@
  */
 package org.exoplatform.forum.service.rest.model;
 
-import java.util.Date;
-
-import org.exoplatform.forum.service.Category;
 
 public abstract class AbstractJson extends HrefLink {
   private static final long serialVersionUID = 1L;
@@ -29,11 +26,9 @@ public abstract class AbstractJson extends HrefLink {
 
   protected String name;
 
-  protected String description;
+  protected String createdDate;
 
-  protected String   createdDate;
-
-  protected String   updatedDate;
+  protected String updatedDate;
 
   public String getId() {
     return id;
@@ -41,14 +36,6 @@ public abstract class AbstractJson extends HrefLink {
 
   public void setId(String id) {
     this.id = id;
-  }
-
-  public String getHref() {
-    return (String) get("href");
-  }
-
-  public void setHref(String href) {
-    put("href", href);
   }
 
   public String getOwner() {
@@ -65,14 +52,6 @@ public abstract class AbstractJson extends HrefLink {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 
   public String getCreatedDate() {

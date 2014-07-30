@@ -17,20 +17,34 @@
 package org.exoplatform.forum.service.rest.model;
 
 import org.exoplatform.forum.service.Post;
+import org.exoplatform.forum.service.rest.RestUtils;
 
 public class PostJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
   
-  private HrefLink topic;
-  private String title;
-  private String message;
-  private String editReason;
-  private String hidden;
+  protected HrefLink topic;
+  protected String title;
+  protected String message;
+  protected String editReason;
+  protected String hidden;
   
-  private HrefLink[] attachments;
+  protected HrefLink[] attachments;
   
   public PostJson(Post post) {
-    
-    
+    this.id = post.getId();
+    this.name = post.getName();
+    this.owner = post.getOwner();
+    this.createdDate = RestUtils.formatDateToISO8601(post.getCreatedDate());
+    this.updatedDate = RestUtils.formatDateToISO8601(post.getModifiedDate());
+    //
+    this.title = post.getName();
+    this.message = post.getMessage();
+    this.editReason = post.getEditReason();
+    this.hidden = String.valueOf(post.getIsHidden() || post.getIsWaiting() || 
+                                 !post.getIsApproved() || !post.getIsActiveByTopic());
+  }
+
+  public void setAttachments(HrefLink[] attachments) {
+    this.attachments = attachments;
   }
 }

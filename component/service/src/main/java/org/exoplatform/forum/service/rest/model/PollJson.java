@@ -22,5 +22,6 @@ public class PollJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
 
   public PollJson(Poll poll) {
+    
   }
 }

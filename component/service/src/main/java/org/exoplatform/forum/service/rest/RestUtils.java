@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.exoplatform.commons.utils.CommonsUtils;
+import org.exoplatform.forum.service.rest.model.AbstractJson;
+import org.exoplatform.forum.service.rest.model.HrefLink;
 
 public class RestUtils {
 
@@ -63,4 +65,30 @@ public class RestUtils {
   public static String getBaseRestUrl() {
     return new StringBuilder(CommonsUtils.getCurrentDomain()).append("/").append(CommonsUtils.getRestContextName()).toString();
   }
+  
+  /**
+   * @param attJson
+   * @param isExtract
+   * @return
+   */
+  public HrefLink getJsonHref(AbstractJson attJson, boolean isExtract) {
+    if (isExtract) {
+      return attJson;
+    }
+    return new HrefLink(attJson.getHref());
+  }
+
+  /**
+   * @param attJsons
+   * @param isExtract
+   * @return
+   */
+  public HrefLink[] getJsonHrefByArray(AbstractJson[] attJsons, boolean isExtract) {
+    HrefLink[] hrefs = new HrefLink[attJsons.length];
+    for (int i = 0; i < attJsons.length; i++) {
+      hrefs[i] = getJsonHref(attJsons[i], isExtract);
+    }
+    return hrefs;
+  }
+  
 }

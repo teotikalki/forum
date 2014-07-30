@@ -17,28 +17,53 @@
 package org.exoplatform.forum.service.rest.model;
 
 import org.exoplatform.forum.service.Topic;
+import org.exoplatform.forum.service.rest.RestUtils;
 
 public class TopicJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
-  private HrefLink forum;
+  protected HrefLink forum;
 
-  private String closed;
-  private String locked;
-  private String moderatePost;
-  private String notifyWhenAddPost;
+  protected String title;
+  protected String description;
+  protected String closed;
+  protected String locked;
+  protected String moderatePost;
+  protected String notifyWhenAddPost;
 
-  private String editReason;
-  private String sticky;
-  private String[] posters;
-  private String[] viewers;
-  private String[] tags;
+  protected String editReason;
+  protected String sticky;
+  protected String[] posters;
+  protected String[] viewers;
+  protected String[] tags;
   
-  private String rating;
+  protected String rating;
   
-  private HrefLink usersRatings;
-  private HrefLink poll;
+  protected HrefLink usersRatings;
+  protected HrefLink poll;
+  
+  protected HrefLink[] attachments;
   
   public TopicJson(Topic topic) {
+    this.id = topic.getId();
+    this.name = topic.getTopicName();
+    this.owner = topic.getOwner();
+    this.createdDate = RestUtils.formatDateToISO8601(topic.getCreatedDate());
+    this.updatedDate = RestUtils.formatDateToISO8601(topic.getModifiedDate());
+    //
+    this.title = topic.getTopicName();
+    this.description = topic.getDescription();
+    this.closed = String.valueOf(topic.getIsClosed());
+    this.locked = String.valueOf(topic.getIsClosed());
+    this.sticky = String.valueOf(topic.getIsSticky());
+    
+    this.notifyWhenAddPost = String.valueOf(topic.getIsNotifyWhenAddPost());
+    this.moderatePost = String.valueOf(topic.getIsModeratePost());
+    
+    this.posters = topic.getCanPost();
+    this.viewers = topic.getCanView();
+    this.tags = topic.getTagId();
+    //
+    this.rating = String.valueOf(topic.getVoteRating());
   }
 
   public void setForum(HrefLink forum) {

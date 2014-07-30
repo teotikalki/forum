@@ -22,21 +22,22 @@ import org.exoplatform.forum.service.rest.RestUtils;
 public class CategoryJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
 
-  private final String position;
-  private final String[] moderators;
-  private final String[] topicCreators;
-  private final String[] posters;
-  private final String[] viewers;
-  private final String[] userPrivates;
+  protected final String position;
+  protected final String description;
+  protected final String[] moderators;
+  protected final String[] topicCreators;
+  protected final String[] posters;
+  protected final String[] viewers;
+  protected final String[] userPrivates;
 
   public CategoryJson(Category cat) {
     this.id = cat.getId();
-    this.position = String.valueOf(cat.getCategoryOrder());
     this.name = cat.getCategoryName();
-    this.description = cat.getDescription();
     this.owner = cat.getOwner();
     this.createdDate = RestUtils.formatDateToISO8601(cat.getCreatedDate());
     this.updatedDate = RestUtils.formatDateToISO8601(cat.getModifiedDate());
+    this.description = cat.getDescription();
+    this.position = String.valueOf(cat.getCategoryOrder());
     //
     this.userPrivates = cat.getUserPrivate();
     this.moderators = cat.getModerators();

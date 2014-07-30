@@ -16,27 +16,20 @@
  */
 package org.exoplatform.forum.service.rest.model;
 
-import java.util.HashMap;
+import org.exoplatform.forum.service.ForumAttachment;
 
-import org.apache.commons.lang.StringUtils;
-
-public class HrefLink extends HashMap<String, Object> {
+public class AttachmentJson extends HrefLink {
   private static final long serialVersionUID = 1L;
 
-  public HrefLink() {
-  }
-
-  public HrefLink(String href) {
-    if (!StringUtils.isEmpty(href)) {
-      put("href", href);
-    }
-  }
+  protected String id;
+  protected String name;
+  protected String mimeType;
+  protected Long weight;
   
-  public void setHref(String href) {
-    put("href", href);
-  }
-  
-  public String getHref() {
-    return (String) get("href");
+  public AttachmentJson(ForumAttachment att) {
+    this.id = att.getId();
+    this.name = att.getName();
+    this.mimeType = att.getMimeType();
+    this.weight = att.getSize();
   }
 }

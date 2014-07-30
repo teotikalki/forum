@@ -17,37 +17,46 @@
 package org.exoplatform.forum.service.rest.model;
 
 import org.exoplatform.forum.service.Forum;
+import org.exoplatform.forum.service.rest.RestUtils;
 
 public class ForumJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
 
-  private HrefLink category;
-  private String title;
-  private String position;
-  private String closed;
-  private String locked;
-  private String autoAddEmailNotify;
-  private String moderateTopic;
-  private String moderatePost;
+  protected HrefLink category;
+  protected String title;
+  protected String position;
+  protected String closed;
+  protected String locked;
+  protected String description;
+  protected String autoAddEmailNotify;
+  protected String moderateTopic;
+  protected String moderatePost;
 
-  private String[] notifyWhenAddTopic;
-  private String[] notifyWhenAddPost;
+  protected String[] notifyWhenAddTopic;
+  protected String[] notifyWhenAddPost;
 
-  private String[] moderators;
-  private String[] topicCreators;
-  private String[] posters;
-  private String[] viewers;
-  private String[] bannedIPs;
+  protected String[] moderators;
+  protected String[] topicCreators;
+  protected String[] posters;
+  protected String[] viewers;
+  protected String[] bannedIPs;
 
   public ForumJson(Forum forum) {
+    this.id = forum.getId();
     this.name = forum.getForumName();
+    this.owner = forum.getOwner();
+    this.createdDate = RestUtils.formatDateToISO8601(forum.getCreatedDate());
+    this.updatedDate = RestUtils.formatDateToISO8601(forum.getModifiedDate());
+    //
     this.title = forum.getForumName();
+    this.description = forum.getDescription();
     this.position = String.valueOf(forum.getForumOrder());
+    //
     this.closed = String.valueOf(forum.getIsClosed());
-    this.locked = String.valueOf(forum.getIsClosed());
-    this.autoAddEmailNotify = String.valueOf(forum.getIsClosed());
-    this.moderateTopic = String.valueOf(forum.getIsClosed());
-    this.moderatePost = String.valueOf(forum.getIsClosed());
+    this.locked = String.valueOf(forum.getIsLock());
+    this.autoAddEmailNotify = String.valueOf(forum.getIsAutoAddEmailNotify());
+    this.moderateTopic = String.valueOf(forum.getIsModerateTopic());
+    this.moderatePost = String.valueOf(forum.getIsModeratePost());
     //
     this.moderators = forum.getModerators();
     this.topicCreators = forum.getCreateTopicRole();
@@ -57,13 +66,9 @@ public class ForumJson extends AbstractJson {
     //
     this.notifyWhenAddTopic = forum.getNotifyWhenAddTopic();
     this.notifyWhenAddPost = forum.getNotifyWhenAddPost();
-    
   }
 
   public void setCategory(HrefLink category) {
     this.category = category;
   }
-  
-  
-  
 }
