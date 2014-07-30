@@ -16,12 +16,38 @@
  */
 package org.exoplatform.forum.service.rest.model;
 
+import org.exoplatform.forum.service.rest.RestUtils;
 import org.exoplatform.poll.service.Poll;
 
 public class PollJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
 
+  protected HrefLink topic;
+  protected String title;
+  protected String timeout;
+  protected String closed;
+  protected String againVote;
+  protected String multiCheck;
+  protected String[] options;
+  protected String[] vote;
+
+  protected HrefLink[] usersVotes;
+  
   public PollJson(Poll poll) {
-    
+    this.id = poll.getId();
+    this.name = poll.getQuestion();
+    this.owner = poll.getOwner();
+    this.createdDate = RestUtils.formatDateToISO8601(poll.getCreatedDate());
+    this.updatedDate = RestUtils.formatDateToISO8601(poll.getModifiedDate());
+    //
+    this.title = poll.getQuestion();
+    this.timeout = String.valueOf(poll.getTimeOut());
+    //
+    this.closed = String.valueOf(poll.getIsClosed());
+    this.againVote = String.valueOf(poll.getIsAgainVote());
+    this.multiCheck = String.valueOf(poll.getIsMultiCheck());
+    //
+    this.options = poll.getOption();
+    this.vote = poll.getVote();
   }
 }
