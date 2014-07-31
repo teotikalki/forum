@@ -21,13 +21,16 @@ import javax.ws.rs.core.UriInfo;
 
 import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.forum.service.Category;
+import org.exoplatform.forum.service.Forum;
 import org.exoplatform.forum.service.ForumService;
 import org.exoplatform.forum.service.filter.model.CategoryFilter;
+import org.exoplatform.forum.service.filter.model.ForumFilter;
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
 import org.exoplatform.forum.service.rest.RestUtils;
 import org.exoplatform.forum.service.rest.api.CategoryForumRestService;
 import org.exoplatform.forum.service.rest.model.AbstractListJson;
 import org.exoplatform.forum.service.rest.model.CategoryJson;
+import org.exoplatform.forum.service.rest.model.ForumJson;
 
 @Path("v1/forum/categories")
 public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl implements CategoryForumRestService {
@@ -74,8 +77,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @GET
   @Path("{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getCategoryById(@Context SecurityContext sc,
-                                   @Context UriInfo uriInfo,
+  public Response getCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
                                    @QueryParam("fields") String fields,
                                    @PathParam("id") String id) throws Exception {
     try {
@@ -85,7 +87,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       Category category = forumService.getCategory(id);
       
       if (category == null || ! hasCanViewCategory(category, authenticatedUser)) {
-        throw new WebApplicationException(Response.Status.UNAUTHORIZED); 
+        return Response.status(Response.Status.UNAUTHORIZED).build();
       }
       
       CategoryJson json = new CategoryJson(category);
@@ -101,8 +103,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @Path("{id}")
   @RolesAllowed("users")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response updateCategoryById(@Context SecurityContext sc,
-                                      @Context UriInfo uriInfo,
+  public Response updateCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
                                       @QueryParam("fields") String fields,
                                       @PathParam("id") String id) throws Exception {
     try {
@@ -112,7 +113,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       Category category = forumService.getCategory(id);
       
       if (category == null || !isManagerCategory(authenticatedUser)) {
-        throw new WebApplicationException(Response.Status.UNAUTHORIZED); 
+        return Response.status(Response.Status.UNAUTHORIZED).build();
       }
       
       CategoryJson json = new CategoryJson(category);
@@ -128,8 +129,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @Path("{id}")
   @RolesAllowed("users")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response deleteCategoryById(@Context SecurityContext sc,
-                                      @Context UriInfo uriInfo,
+  public Response deleteCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
                                       @QueryParam("fields") String fields,
                                       @PathParam("id") String id) throws Exception {
     try {
@@ -139,7 +139,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       Category category = forumService.getCategory(id);
       
       if (category == null || !isManagerCategory(authenticatedUser)) {
-        throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        return Response.status(Response.Status.UNAUTHORIZED).build();
       }
       
       CategoryJson json = new CategoryJson(category);
@@ -153,6 +153,41 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
     }
   }
 
+  @GET
+  @Path("{id}/forums")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getForums(@Context SecurityContext sc, @Context UriInfo uriInfo,
+                            @QueryParam("fields") String fields,
+                            @QueryParam("returnSize") boolean returnSize,
+                            @QueryParam("offset") int offset,
+                            @QueryParam("limit") int limit,
+                            @PathParam("id") String id) throws Exception {
+    try {
+      String authenticatedUser = getUserId(sc, uriInfo);;
+
+      List<ForumJson> forumJsons = new ArrayList<ForumJson>();
+      ForumService forumService = getForumService();
+      ForumFilter forumFilter = new ForumFilter(id, false).userId(authenticatedUser);
+      List<Forum> forums = forumService.getForums(forumFilter);
+      for (Forum forum : forums) {
+        ForumJson forumJson = new ForumJson(forum);
+        forumJson.setHref(RestUtils.getRestUrl(FORUMS, forum.getId(), uriInfo.getPath()));
+        forumJsons.add(forumJson);
+      }
+
+      ResultForums result = new ResultForums(forumJsons);
+      result.setLimit(limit);
+      result.setOffset(offset);
+      if (returnSize) {
+        result.setSize(forumJsons.size());
+      }
+      return Response.ok(result, MediaType.APPLICATION_JSON).cacheControl(cc).build();
+    } catch (Exception e) {
+      return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+  
+  
   public class ResultCategories extends AbstractListJson {
     private List<CategoryJson> categories;
 
@@ -168,4 +203,20 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       this.categories = categories;
     }
   }
+  
+  public class ResultForums extends AbstractListJson {
+    private List<ForumJson> forums;
+
+    public ResultForums(List<ForumJson> jsons) {
+      forums = jsons;
+    }
+
+    public List<ForumJson> getForums() {
+      return forums;
+    }
+    public void setForums(List<ForumJson> forums) {
+      this.forums = forums;
+    }
+  }
+
 }

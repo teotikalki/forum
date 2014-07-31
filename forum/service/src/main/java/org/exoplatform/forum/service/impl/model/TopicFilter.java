@@ -35,6 +35,10 @@ public class TopicFilter implements Serializable {
   
   private String userName = null;
 
+  public TopicFilter(String userLogin) {
+    this.userLogin = userLogin;
+  }
+
   public TopicFilter(String categoryId, String forumId) {
     this.categoryId = categoryId;
     this.forumId = forumId;

@@ -1,6 +1,7 @@
 package org.exoplatform.forum.service.rest.api;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -13,18 +14,18 @@ import org.exoplatform.forum.service.rest.AbstractForumRest;
 public interface ForumForumRestService extends AbstractForumRest {
 
   /**
-   * Process to return all forums in json format
-   * 
+   *  Return a forum
+   * @param sc
    * @param uriInfo
-   * @param returnSize true if the response must contain the total size of all forums found
-   * @param offset index of the first forum to return 
-   * @param limit the maximum number of forums to return
+   * @param fields
+   * @param expand
+   * @param id
    * @return
    * @throws Exception
    */
   @GET
-  public Response getForums(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                             @QueryParam("returnSize") boolean returnSize,
-                             @QueryParam("offset") int offset,
-                             @QueryParam("limit") int limit) throws Exception;
+  public Response getForum(@Context SecurityContext sc, @Context UriInfo uriInfo,
+                            @QueryParam("fields") String fields,
+                            @QueryParam("expand") String expand,
+                            @PathParam("id") String id) throws Exception;
 }

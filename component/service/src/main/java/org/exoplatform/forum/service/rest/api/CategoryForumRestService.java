@@ -75,4 +75,20 @@ public interface CategoryForumRestService extends AbstractForumRest {
                                       @Context UriInfo uriInfo,
                                       @QueryParam("fields") String fields,
                                       @PathParam("id") String id) throws Exception;
+
+  /**
+   * Process to return all forums in the category.
+   * 
+   * @param uriInfo
+   * @param returnSize true if the response must contain the total size of all forums found
+   * @param offset index of the first forum to return 
+   * @param limit the maximum number of forums to return
+   * @param id The category's id.
+   */
+  public Response getForums(@Context SecurityContext sc, @Context UriInfo uriInfo,
+                            @QueryParam("fields") String fields,
+                            @QueryParam("returnSize") boolean returnSize,
+                            @QueryParam("offset") int offset,
+                            @QueryParam("limit") int limit,
+                            @PathParam("id") String id) throws Exception;
 }
