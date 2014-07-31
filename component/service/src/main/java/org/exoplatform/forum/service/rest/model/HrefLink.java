@@ -35,6 +35,10 @@ public class HrefLink extends HashMap<String, Object> {
   public void setHref(String href) {
     put("href", href);
   }
+
+  public void setHref(HrefLink href) {
+    put("href", href);
+  }
   
   public String getHref() {
     return (String) get("href");

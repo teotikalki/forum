@@ -60,6 +60,10 @@ public abstract class AbstractForumRestServiceImpl {
   }
 
   private String getViewerId(UriInfo uriInfo) {
+    return getQueryParam(uriInfo, "opensocial_viewer_id");
+  }
+  
+  protected String getQueryParam(UriInfo uriInfo, String key) {
     URI uri = uriInfo.getRequestUri();
     String requestString = uri.getQuery();
     if (requestString == null) {
@@ -67,11 +71,37 @@ public abstract class AbstractForumRestServiceImpl {
     }
     String[] queryParts = requestString.split("&");
     for (String queryPart : queryParts) {
-      if (queryPart.startsWith("opensocial_viewer_id")) {
+      if (queryPart.equalsIgnoreCase(key)) {
         return queryPart.substring(queryPart.indexOf("=") + 1, queryPart.length());
       }
     }
     return null;
+  }
+  
+  protected String getQueryValueId(UriInfo uriInfo) {
+    return getQueryParam(uriInfo, "id");
+  }
+
+  protected String getQueryValueFields(UriInfo uriInfo) {
+    return getQueryParam(uriInfo, "fields");
+  }
+
+  protected String getQueryValueExpand(UriInfo uriInfo) {
+    return getQueryParam(uriInfo, "expand");
+  }
+
+  protected Integer getQueryValueLimit(UriInfo uriInfo) {
+    String limit = getQueryParam(uriInfo, "limit");
+    return (limit != null) ? Integer.valueOf(limit) : null;
+  }
+
+  protected Integer getQueryValueOffset(UriInfo uriInfo) {
+    String offset = getQueryParam(uriInfo, "offset");
+    return (offset != null) ? Integer.valueOf(offset) : null;
+  }
+
+  protected boolean getQueryValueReturnSize(UriInfo uriInfo) {
+    return Boolean.valueOf(getQueryParam(uriInfo, "returnSize").trim());
   }
 
   public boolean hasCanViewForum(Forum forum, String userId) {

@@ -12,7 +12,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -173,15 +172,15 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       Category category = forumService.getCategory(id);
       
       if (category == null || ! hasCanViewCategory(category, authenticatedUser)) {
-        throw new WebApplicationException(Response.Status.UNAUTHORIZED); 
+        return Response.status(Status.UNAUTHORIZED).build();
       }
       
       limit = limit <= 0 ? DEFAULT_LIMIT : Math.min(HARD_LIMIT, limit);
       offset = offset < 0 ? DEFAULT_OFFSET : offset;
       
       ForumFilter filter = new ForumFilter(id, authenticatedUser, owner);
-      filter.setClosed(closed != null && (closed.equals("true") || closed.equals("false")) ? closed : null);
-      filter.setLocked(locked != null && (locked.equals("true") || locked.equals("false")) ? locked : null);
+      filter.setClosed(closed != null && ("true".equals(closed) || closed.equals("false")) ? closed : null);
+      filter.setLocked(locked != null && ("true".equals(locked) || locked.equals("false")) ? locked : null);
       ListAccess<Forum> listAccess = forumService.getForumsWithListAccess(filter);
       Forum[] forums = listAccess.load(offset, limit);
 
@@ -207,7 +206,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @POST
   @Path("{id}/forums")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createForums(@Context SecurityContext sc, @Context UriInfo uriInfo,
+  public Response createForum(@Context SecurityContext sc, @Context UriInfo uriInfo,
                                 ForumJson forumData,
                                 @PathParam("id") String id) throws Exception {
     

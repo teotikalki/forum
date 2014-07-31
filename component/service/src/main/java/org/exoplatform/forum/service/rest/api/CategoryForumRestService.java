@@ -109,7 +109,7 @@ public interface CategoryForumRestService extends AbstractForumRest {
   @POST
   @Path("{id}/forums")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createForums(@Context SecurityContext sc, @Context UriInfo uriInfo,
+  public Response createForum(@Context SecurityContext sc, @Context UriInfo uriInfo,
                                 ForumJson forumData,
                                 @PathParam("id") String id) throws Exception;
 }
