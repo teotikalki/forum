@@ -7,8 +7,10 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.RuntimeDelegate;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.exoplatform.commons.utils.CommonsUtils;
 import org.exoplatform.forum.common.CommonUtils;
+import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.ForumService;
 import org.exoplatform.services.rest.impl.RuntimeDelegateImpl;
 import org.exoplatform.services.security.ConversationState;
@@ -65,6 +67,21 @@ public abstract class AbstractForumRestServiceImpl {
       }
     }
     return null;
+  }
+  
+  /**
+   * Check if the current user has permission to view the category
+   * 
+   * @param category
+   * @param userId
+   * @return
+   */
+  public boolean hasViewCategoryPermission(Category category, String userId) {
+    String[] usersPrivates = category.getUserPrivate();
+    return (usersPrivates == null) 
+            || ArrayUtils.contains(usersPrivates, userId)
+            || (usersPrivates.length == 1 && ArrayUtils.contains(usersPrivates, ""))
+            || (usersPrivates.length == 1 && ArrayUtils.contains(usersPrivates, " "));
   }
 
   protected ForumService getForumService() {

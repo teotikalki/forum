@@ -23,6 +23,8 @@ public class CategoryFilter {
   private String              categoryId;
 
   private String              categoryName;
+  
+  private String              authenticatedUser;
 
   // The list forum's information <forumId, forumName>
   private List<ForumFilter> forumFilters;
@@ -35,6 +37,10 @@ public class CategoryFilter {
 
   public CategoryFilter() {
     this.forumFilters = new ArrayList<ForumFilter>();
+  }
+  
+  public CategoryFilter(String authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
   }
 
   public String getCategoryId() {
@@ -80,6 +86,21 @@ public class CategoryFilter {
     }
     return false;
   }
+
+  /**
+   * @return the authenticatedUser
+   */
+  public String getAuthenticatedUser() {
+    return authenticatedUser;
+  }
+
+  /**
+   * @param authenticatedUser the authenticatedUser to set
+   */
+  public void setAuthenticatedUser(String authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
+  }
+
   
   
 }

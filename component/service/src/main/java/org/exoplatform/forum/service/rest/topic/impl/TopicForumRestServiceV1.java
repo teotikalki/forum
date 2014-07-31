@@ -9,21 +9,19 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.Status;
 
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
 import org.exoplatform.forum.service.rest.api.TopicForumRestService;
 import org.exoplatform.forum.service.rest.model.AbstractListJson;
-import org.exoplatform.forum.service.rest.model.PostJson;
 import org.exoplatform.forum.service.rest.model.TopicJson;
 
-@Path("v1/forum")
+@Path("v1/forum/topics")
 public class TopicForumRestServiceV1 extends AbstractForumRestServiceImpl implements TopicForumRestService {
 
   @GET
-  @Path("/topics")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getTopics(@Context SecurityContext sc, @Context UriInfo uriInfo,
                              @QueryParam("returnSize") boolean returnSize,

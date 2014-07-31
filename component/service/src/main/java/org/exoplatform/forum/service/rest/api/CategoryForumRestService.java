@@ -16,9 +16,15 @@
  */
 package org.exoplatform.forum.service.rest.api;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
@@ -39,8 +45,34 @@ public interface CategoryForumRestService extends AbstractForumRest {
    * @throws Exception
    */
   @GET
+  @Produces(MediaType.APPLICATION_JSON)
   public Response getCategories(@Context SecurityContext sc, @Context UriInfo uriInfo,
+                                 @QueryParam("fields") String fields,
                                  @QueryParam("returnSize") boolean returnSize,
                                  @QueryParam("offset") int offset,
                                  @QueryParam("limit") int limit) throws Exception;
+  
+  @GET
+  @Path("{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getCategoryById(@Context SecurityContext sc,
+                                   @Context UriInfo uriInfo,
+                                   @QueryParam("fields") String fields,
+                                   @PathParam("id") String id) throws Exception;
+  
+  @PUT
+  @Path("{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response updateCategoryById(@Context SecurityContext sc,
+                                      @Context UriInfo uriInfo,
+                                      @QueryParam("fields") String fields,
+                                      @PathParam("id") String id) throws Exception;
+  
+  @DELETE
+  @Path("{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response deleteCategoryById(@Context SecurityContext sc,
+                                      @Context UriInfo uriInfo,
+                                      @QueryParam("fields") String fields,
+                                      @PathParam("id") String id) throws Exception;
 }

@@ -9,21 +9,19 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.Status;
 
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
 import org.exoplatform.forum.service.rest.api.PostForumRestService;
 import org.exoplatform.forum.service.rest.model.AbstractListJson;
-import org.exoplatform.forum.service.rest.model.PollJson;
 import org.exoplatform.forum.service.rest.model.PostJson;
 
-@Path("v1/forum")
+@Path("v1/forum/posts")
 public class PostForumRestServiceV1 extends AbstractForumRestServiceImpl implements PostForumRestService {
 
   @GET
-  @Path("/posts")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getPosts(@Context SecurityContext sc, @Context UriInfo uriInfo,
                             @QueryParam("returnSize") boolean returnSize,

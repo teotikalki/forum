@@ -8543,9 +8543,13 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
   }
   
   private String buildGetCategoriesQueryByFilter(CategoryFilter filter) {
+    List<String> listOfUser = UserHelper.getAllGroupAndMembershipOfUser(filter.getAuthenticatedUser());
+    
     String categoryHomePath = "/" + dataLocator.getForumCategoriesLocation();
     StringBuilder sqlQuery = jcrPathLikeAndNotLike(EXO_FORUM_CATEGORY, categoryHomePath);
     Utils.addMoreSQLQueryFilter(sqlQuery, EXO_NAME, filter.getCategoryName(), " AND ", COMPARATOR.LIKE);
+    sqlQuery.append(" AND (").append(Utils.buildSQLHasProperty(EXO_USER_PRIVATE))
+            .append(" OR ").append(Utils.buildSQLByUserInfo(EXO_USER_PRIVATE, listOfUser)).append(")");
     return sqlQuery.toString();
   }
   

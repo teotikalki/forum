@@ -34,6 +34,7 @@ public class CategoryForumTestCase extends BaseForumServiceTestCase {
     }
     
     CategoryFilter filter = new CategoryFilter();
+    filter.setAuthenticatedUser("john");
     ListAccess<Category> listAccess = forumService_.getCategoriesWithListAccess(filter);
     assertEquals(3, listAccess.getSize());
     assertEquals(3, listAccess.load(0, 5).length);

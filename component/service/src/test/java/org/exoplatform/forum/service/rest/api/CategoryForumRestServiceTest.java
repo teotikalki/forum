@@ -52,6 +52,7 @@ public class CategoryForumRestServiceTest extends AbstractResourceTest {
     Category category = forumService.getCategory(categoryId);
     assertNotNull(category);
     
+    startSessionAs("root");
     String eventURI = "/categories";
     ContainerResponse response = performTestCase("GET", eventURI);
     assertNotNull(response);
@@ -62,5 +63,6 @@ public class CategoryForumRestServiceTest extends AbstractResourceTest {
     assertEquals(1, bean.categories.size());
     assertEquals("localhost:8080/rest/v1/forum/categories/" + category.getId(), bean.categories.get(0).getHref());
     
+    endSession();
   }
 }

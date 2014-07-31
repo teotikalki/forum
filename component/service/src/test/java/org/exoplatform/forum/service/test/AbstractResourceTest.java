@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.rest.ContainerResponseWriter;
 import org.exoplatform.services.rest.impl.ContainerRequest;
 import org.exoplatform.services.rest.impl.ContainerResponse;
@@ -35,6 +36,8 @@ import org.exoplatform.services.rest.impl.InputHeadersMap;
 import org.exoplatform.services.rest.impl.MultivaluedMapImpl;
 import org.exoplatform.services.rest.tools.ByteArrayContainerResponseWriter;
 import org.exoplatform.services.rest.tools.DummyContainerResponseWriter;
+import org.exoplatform.services.security.ConversationState;
+import org.exoplatform.services.security.Identity;
 import org.exoplatform.ws.frameworks.json.impl.JsonDefaultHandler;
 import org.exoplatform.ws.frameworks.json.impl.JsonException;
 import org.exoplatform.ws.frameworks.json.impl.JsonGeneratorImpl;
@@ -217,5 +220,19 @@ public abstract class AbstractResourceTest extends AbstractServiceTest {
     ContainerResponse containerResponse = service(method, resourceUrl, "", h, data);
 
     assertEquals("The response code of resource("+resourceUrl+") is not expected.)",statusCode, containerResponse.getStatus());
+  }
+  
+  protected void startSessionAs(String user) {
+    Identity identity = new Identity(user);
+    ConversationState state = new ConversationState(identity);
+    ConversationState.setCurrent(state);
+    sessionProviderService.setSessionProvider(null, new SessionProvider(state));
+    sessionProvider = sessionProviderService.getSessionProvider(null);
+  }
+  
+  protected void endSession() {
+    sessionProviderService.removeSessionProvider(null);
+    ConversationState.setCurrent(null);
+    startSystemSession();
   }
 }

@@ -14,11 +14,10 @@ import javax.ws.rs.core.Response.Status;
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
 import org.exoplatform.forum.service.rest.api.VoteForumRestService;
 
-@Path("v1/forum")
+@Path("v1/forum/votes")
 public class VoteForumRestServiceV1 extends AbstractForumRestServiceImpl implements VoteForumRestService {
 
   @GET
-  @Path("/votes")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getVotes(@Context SecurityContext sc, @Context UriInfo uriInfo,
                             @QueryParam("returnSize") boolean returnSize,
