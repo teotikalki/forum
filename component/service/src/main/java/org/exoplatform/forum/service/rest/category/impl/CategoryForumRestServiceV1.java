@@ -154,10 +154,18 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   }
 
   public class ResultCategories extends AbstractListJson {
-    public List<CategoryJson> categories;
+    private List<CategoryJson> categories;
 
     public ResultCategories(List<CategoryJson> jsons) {
-      categories = jsons;
+      setCategories(jsons);
+    }
+
+    public List<CategoryJson> getCategories() {
+      return categories;
+    }
+
+    public void setCategories(List<CategoryJson> categories) {
+      this.categories = categories;
     }
   }
 

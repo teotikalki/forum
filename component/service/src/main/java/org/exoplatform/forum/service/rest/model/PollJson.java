@@ -22,32 +22,57 @@ import org.exoplatform.poll.service.Poll;
 public class PollJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
 
-  protected HrefLink topic;
-  protected String title;
-  protected String timeout;
-  protected String closed;
-  protected String againVote;
-  protected String multiCheck;
-  protected String[] options;
-  protected String[] vote;
-
-  protected HrefLink[] usersVotes;
-  
   public PollJson(Poll poll) {
-    this.id = poll.getId();
-    this.name = poll.getQuestion();
-    this.owner = poll.getOwner();
-    this.createdDate = RestUtils.formatDateToISO8601(poll.getCreatedDate());
-    this.updatedDate = RestUtils.formatDateToISO8601(poll.getModifiedDate());
+    put("id", poll.getId());
+    put("name", poll.getQuestion());
+    put("owner", poll.getOwner());
+    put("createdDate", RestUtils.formatDateToISO8601(poll.getCreatedDate()));
+    put("updatedDate", RestUtils.formatDateToISO8601(poll.getModifiedDate()));
     //
-    this.title = poll.getQuestion();
-    this.timeout = String.valueOf(poll.getTimeOut());
+    put("title", poll.getQuestion());
+    put("timeout", String.valueOf(poll.getTimeOut()));
     //
-    this.closed = String.valueOf(poll.getIsClosed());
-    this.againVote = String.valueOf(poll.getIsAgainVote());
-    this.multiCheck = String.valueOf(poll.getIsMultiCheck());
+    put("closed", String.valueOf(poll.getIsClosed()));
+    put("againVote", String.valueOf(poll.getIsAgainVote()));
+    put("multiCheck", String.valueOf(poll.getIsMultiCheck()));
     //
-    this.options = poll.getOption();
-    this.vote = poll.getVote();
+    put("options", poll.getOption());
+    put("vote", poll.getVote());
+  }
+
+  public void setTopic(HrefLink topic) {
+    put("topic", topic);
+  }
+
+  public void setTitle(String title) {
+    put("title", title);
+  }
+
+  public void setTimeout(String timeout) {
+    put("timeout", timeout);
+  }
+
+  public void setClosed(String closed) {
+    put("closed", closed);
+  }
+
+  public void setAgainVote(String againVote) {
+    put("againVote", againVote);
+  }
+
+  public void setMultiCheck(String multiCheck) {
+    put("multiCheck", multiCheck);
+  }
+
+  public void setOptions(String[] options) {
+    put("options", options);
+  }
+
+  public void setVote(String[] vote) {
+    put("vote", vote);
+  }
+
+  public void setUsersVotes(String[] usersVotes) {
+    put("usersVotes", usersVotes);
   }
 }

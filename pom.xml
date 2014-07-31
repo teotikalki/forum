@@ -128,6 +128,12 @@
       </dependency>
       <dependency>
         <groupId>org.exoplatform.forum</groupId>
+        <artifactId>forum-component-service</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+      </dependency>
+      <dependency>
+        <groupId>org.exoplatform.forum</groupId>
         <artifactId>forum-component-rendering</artifactId>
         <version>${project.version}</version>
         <type>jar</type>

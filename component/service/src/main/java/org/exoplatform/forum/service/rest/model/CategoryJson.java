@@ -20,35 +20,51 @@ import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.rest.RestUtils;
 
 public class CategoryJson extends AbstractJson {
-  private static final long serialVersionUID = 1L;
-
-  protected final String position;
-  protected final String description;
-  protected final String[] moderators;
-  protected final String[] topicCreators;
-  protected final String[] posters;
-  protected final String[] viewers;
-  protected final String[] userPrivates;
+  private final static long serialVersionUID = 1L;
 
   public CategoryJson(Category cat) {
-    this.id = cat.getId();
-    this.name = cat.getCategoryName();
-    this.owner = cat.getOwner();
-    this.createdDate = RestUtils.formatDateToISO8601(cat.getCreatedDate());
-    this.updatedDate = RestUtils.formatDateToISO8601(cat.getModifiedDate());
-    this.description = cat.getDescription();
-    this.position = String.valueOf(cat.getCategoryOrder());
+    put("id", cat.getId());
+    put("name", cat.getCategoryName());
+    put("owner", cat.getOwner());
+    put("createdDate", RestUtils.formatDateToISO8601(cat.getCreatedDate()));
+    put("updatedDate", RestUtils.formatDateToISO8601(cat.getModifiedDate()));
+    
+    put("description", cat.getDescription());
+    put("position", String.valueOf(cat.getCategoryOrder()));
     //
-    this.userPrivates = cat.getUserPrivate();
-    this.moderators = cat.getModerators();
-    this.topicCreators = cat.getCreateTopicRole();
-    this.posters = cat.getPoster();
-    this.viewers = cat.getViewer();
+    put("userPrivates", cat.getUserPrivate());
+    put("moderators", cat.getModerators());
+    put("topicCreators", cat.getCreateTopicRole());
+    put("posters", cat.getPoster());
+    put("viewers", cat.getViewer());
   }
 
-  public CategoryJson(Category cat, String href) {
-    this(cat);
-    setHref(href);
+  public void setPosition(String position) {
+    put("position", position);
+  }
+
+  public void setDescription(String description) {
+    put("description", description);
+  }
+
+  public void setModerators(String[] moderators) {
+    put("moderators", moderators);
+  }
+
+  public void setTopicCreators(String[] topicCreators) {
+    put("topicCreators", topicCreators);
+  }
+
+  public void setPosters(String[] posters) {
+    put("posters", posters);
+  }
+
+  public void setViewers(String[] viewers) {
+    put("viewers", viewers);
+  }
+
+  public void setUserPrivates(String[] userPrivates) {
+    put("userPrivates", userPrivates);
   }
   
 }

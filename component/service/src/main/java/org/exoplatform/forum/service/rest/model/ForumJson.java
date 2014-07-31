@@ -22,53 +22,94 @@ import org.exoplatform.forum.service.rest.RestUtils;
 public class ForumJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
 
-  protected HrefLink category;
-  protected String title;
-  protected String position;
-  protected String closed;
-  protected String locked;
-  protected String description;
-  protected String autoAddEmailNotify;
-  protected String moderateTopic;
-  protected String moderatePost;
-
-  protected String[] notifyWhenAddTopic;
-  protected String[] notifyWhenAddPost;
-
-  protected String[] moderators;
-  protected String[] topicCreators;
-  protected String[] posters;
-  protected String[] viewers;
-  protected String[] bannedIPs;
-
   public ForumJson(Forum forum) {
-    this.id = forum.getId();
-    this.name = forum.getForumName();
-    this.owner = forum.getOwner();
-    this.createdDate = RestUtils.formatDateToISO8601(forum.getCreatedDate());
-    this.updatedDate = RestUtils.formatDateToISO8601(forum.getModifiedDate());
+    put("id", forum.getId());
+    put("name", forum.getForumName());
+    put("owner", forum.getOwner());
+    put("createdDate", RestUtils.formatDateToISO8601(forum.getCreatedDate()));
+    put("updatedDate", RestUtils.formatDateToISO8601(forum.getModifiedDate()));
     //
-    this.title = forum.getForumName();
-    this.description = forum.getDescription();
-    this.position = String.valueOf(forum.getForumOrder());
+    put("title", forum.getForumName());
+    put("description", forum.getDescription());
+    put("position", String.valueOf(forum.getForumOrder()));
     //
-    this.closed = String.valueOf(forum.getIsClosed());
-    this.locked = String.valueOf(forum.getIsLock());
-    this.autoAddEmailNotify = String.valueOf(forum.getIsAutoAddEmailNotify());
-    this.moderateTopic = String.valueOf(forum.getIsModerateTopic());
-    this.moderatePost = String.valueOf(forum.getIsModeratePost());
+    put("closed", String.valueOf(forum.getIsClosed()));
+    put("locked", String.valueOf(forum.getIsLock()));
+    put("autoAddEmailNotify", String.valueOf(forum.getIsAutoAddEmailNotify()));
+    put("moderateTopic", String.valueOf(forum.getIsModerateTopic()));
+    put("moderatePost", String.valueOf(forum.getIsModeratePost()));
     //
-    this.moderators = forum.getModerators();
-    this.topicCreators = forum.getCreateTopicRole();
-    this.posters = forum.getPoster();
-    this.viewers = forum.getViewer();
-    this.bannedIPs = forum.getBanIP().toArray(new String[] {});
+    put("moderators", forum.getModerators());
+    put("topicCreators", forum.getCreateTopicRole());
+    put("posters", forum.getPoster());
+    put("viewers", forum.getViewer());
+    put("bannedIPs", forum.getBanIP().toArray(new String[] {}));
     //
-    this.notifyWhenAddTopic = forum.getNotifyWhenAddTopic();
-    this.notifyWhenAddPost = forum.getNotifyWhenAddPost();
+    put("notifyWhenAddTopic", forum.getNotifyWhenAddTopic());
+    put("notifyWhenAddPost", forum.getNotifyWhenAddPost());
   }
 
   public void setCategory(HrefLink category) {
-    this.category = category;
+    put("category", category);
+  }
+
+  public void setTitle(String title) {
+    put("title", title);
+  }
+
+  public void setPosition(String position) {
+    put("position", position);
+  }
+
+  public void setClosed(String closed) {
+    put("closed", closed);
+  }
+
+  public void setLocked(String locked) {
+    put("locked", locked);
+  }
+
+  public void setDescription(String description) {
+    put("description", description);
+  }
+
+  public void setAutoAddEmailNotify(String autoAddEmailNotify) {
+    put("autoAddEmailNotify", autoAddEmailNotify);
+  }
+
+  public void setModerateTopic(String moderateTopic) {
+    put("moderateTopic", moderateTopic);
+  }
+
+  public void setModeratePost(String moderatePost) {
+    put("moderatePost", moderatePost);
+  }
+
+  public void setNotifyWhenAddTopic(String[] notifyWhenAddTopic) {
+    put("notifyWhenAddTopic", notifyWhenAddTopic);
+  }
+
+  public void setNotifyWhenAddPost(String[] notifyWhenAddPost) {
+    put("notifyWhenAddPost", notifyWhenAddPost);
+  }
+
+  public void setModerators(String[] moderators) {
+    put("moderators", moderators);
+  }
+
+  public void setTopicCreators(String[] topicCreators) {
+    put("topicCreators", topicCreators);
+  }
+
+  public void setPosters(String[] posters) {
+    put("posters", posters);
+  }
+
+  public void setViewers(String[] viewers) {
+    put("viewers", viewers);
+  }
+
+  public void setBannedIPs(String[] bannedIPs) {
+    put("bannedIPs", bannedIPs);
   }
 }

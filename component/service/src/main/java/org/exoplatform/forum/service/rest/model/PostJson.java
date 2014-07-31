@@ -22,29 +22,41 @@ import org.exoplatform.forum.service.rest.RestUtils;
 public class PostJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
   
-  protected HrefLink topic;
-  protected String title;
-  protected String message;
-  protected String editReason;
-  protected String hidden;
-  
-  protected HrefLink[] attachments;
-  
   public PostJson(Post post) {
-    this.id = post.getId();
-    this.name = post.getName();
-    this.owner = post.getOwner();
-    this.createdDate = RestUtils.formatDateToISO8601(post.getCreatedDate());
-    this.updatedDate = RestUtils.formatDateToISO8601(post.getModifiedDate());
+    put("id", post.getId());
+    put("name", post.getName());
+    put("owner", post.getOwner());
+    put("createdDate", RestUtils.formatDateToISO8601(post.getCreatedDate()));
+    put("updatedDate", RestUtils.formatDateToISO8601(post.getModifiedDate()));
     //
-    this.title = post.getName();
-    this.message = post.getMessage();
-    this.editReason = post.getEditReason();
-    this.hidden = String.valueOf(post.getIsHidden() || post.getIsWaiting() || 
-                                 !post.getIsApproved() || !post.getIsActiveByTopic());
+    put("title", post.getName());
+    put("message", post.getMessage());
+    put("editReason", post.getEditReason());
+    put("hidden", String.valueOf(post.getIsHidden() || post.getIsWaiting() || 
+                                 !post.getIsApproved() || !post.getIsActiveByTopic()));
   }
 
   public void setAttachments(HrefLink[] attachments) {
-    this.attachments = attachments;
+    put("attachments", attachments);
+  }
+
+  public void setTopic(HrefLink topic) {
+    put("topic", topic);
+  }
+
+  public void setTitle(String title) {
+    put("title", title);
+  }
+
+  public void setMessage(String message) {
+    put("message", message);
+  }
+
+  public void setEditReason(String editReason) {
+    put("editReason", editReason);
+  }
+
+  public void setHidden(String hidden) {
+    put("hidden", hidden);
   }
 }

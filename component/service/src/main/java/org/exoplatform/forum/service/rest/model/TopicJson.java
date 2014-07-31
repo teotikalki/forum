@@ -21,60 +21,91 @@ import org.exoplatform.forum.service.rest.RestUtils;
 
 public class TopicJson extends AbstractJson {
   private static final long serialVersionUID = 1L;
-  protected HrefLink forum;
 
-  protected String title;
-  protected String description;
-  protected String closed;
-  protected String locked;
-  protected String moderatePost;
-  protected String notifyWhenAddPost;
-
-  protected String editReason;
-  protected String sticky;
-  protected String[] posters;
-  protected String[] viewers;
-  protected String[] tags;
-  
-  protected String rating;
-  
-  protected HrefLink usersRatings;
-  protected HrefLink poll;
-  
-  protected HrefLink[] attachments;
-  
   public TopicJson(Topic topic) {
-    this.id = topic.getId();
-    this.name = topic.getTopicName();
-    this.owner = topic.getOwner();
-    this.createdDate = RestUtils.formatDateToISO8601(topic.getCreatedDate());
-    this.updatedDate = RestUtils.formatDateToISO8601(topic.getModifiedDate());
+    put("id", topic.getId());
+    put("name", topic.getTopicName());
+    put("owner", topic.getOwner());
+    put("createdDate", RestUtils.formatDateToISO8601(topic.getCreatedDate()));
+    put("updatedDate", RestUtils.formatDateToISO8601(topic.getModifiedDate()));
     //
-    this.title = topic.getTopicName();
-    this.description = topic.getDescription();
-    this.closed = String.valueOf(topic.getIsClosed());
-    this.locked = String.valueOf(topic.getIsClosed());
-    this.sticky = String.valueOf(topic.getIsSticky());
+    put("title", topic.getTopicName());
+    put("description", topic.getDescription());
+    put("closed", String.valueOf(topic.getIsClosed()));
+    put("locked", String.valueOf(topic.getIsClosed()));
+    put("sticky", String.valueOf(topic.getIsSticky()));
     
-    this.notifyWhenAddPost = String.valueOf(topic.getIsNotifyWhenAddPost());
-    this.moderatePost = String.valueOf(topic.getIsModeratePost());
+    put("notifyWhenAddPost", String.valueOf(topic.getIsNotifyWhenAddPost()));
+    put("moderatePost", String.valueOf(topic.getIsModeratePost()));
     
-    this.posters = topic.getCanPost();
-    this.viewers = topic.getCanView();
-    this.tags = topic.getTagId();
+    put("posters", topic.getCanPost());
+    put("viewers", topic.getCanView());
+    put("tags", topic.getTagId());
     //
-    this.rating = String.valueOf(topic.getVoteRating());
+    put("rating", String.valueOf(topic.getVoteRating()));
   }
 
   public void setForum(HrefLink forum) {
-    this.forum = forum;
+    put("forum", forum);
   }
 
   public void setUsersRatings(HrefLink usersRatings) {
-    this.usersRatings = usersRatings;
+    put("usersRatings", usersRatings);
   }
 
   public void setPoll(HrefLink poll) {
-    this.poll = poll;
+    put("poll", poll);
+  }
+
+  public void setTitle(String title) {
+    put("title", title);
+  }
+
+  public void setDescription(String description) {
+    put("description", description);
+  }
+
+  public void setClosed(String closed) {
+    put("closed", closed);
+  }
+
+  public void setLocked(String locked) {
+    put("locked", locked);
+  }
+
+  public void setModeratePost(String moderatePost) {
+    put("moderatePost", moderatePost);
+  }
+
+  public void setNotifyWhenAddPost(String notifyWhenAddPost) {
+    put("notifyWhenAddPost", notifyWhenAddPost);
+  }
+
+  public void setEditReason(String editReason) {
+    put("editReason", editReason);
+  }
+
+  public void setSticky(String sticky) {
+    put("sticky", sticky);
+  }
+
+  public void setPosters(String[] posters) {
+    put("posters", posters);
+  }
+
+  public void setViewers(String[] viewers) {
+    put("viewers", viewers);
+  }
+
+  public void setTags(String[] tags) {
+    put("tags", tags);
+  }
+
+  public void setRating(String rating) {
+    put("rating", rating);
+  }
+
+  public void setAttachments(HrefLink[] attachments) {
+    put("attachments", attachments);
   }
 }
