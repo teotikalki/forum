@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -158,20 +159,36 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @Produces(MediaType.APPLICATION_JSON)
   public Response getForums(@Context SecurityContext sc, @Context UriInfo uriInfo,
                             @QueryParam("fields") String fields,
+                            @QueryParam("owner") String owner,
+                            @QueryParam("locked") String locked,
+                            @QueryParam("closed") String closed,
                             @QueryParam("returnSize") boolean returnSize,
                             @QueryParam("offset") int offset,
                             @QueryParam("limit") int limit,
                             @PathParam("id") String id) throws Exception {
     try {
-      String authenticatedUser = getUserId(sc, uriInfo);;
+      String authenticatedUser = getUserId(sc, uriInfo);
+      
+      ForumService forumService = getForumService();
+      Category category = forumService.getCategory(id);
+      
+      if (category == null || ! hasCanViewCategory(category, authenticatedUser)) {
+        throw new WebApplicationException(Response.Status.UNAUTHORIZED); 
+      }
+      
+      limit = limit <= 0 ? DEFAULT_LIMIT : Math.min(HARD_LIMIT, limit);
+      offset = offset < 0 ? DEFAULT_OFFSET : offset;
+      
+      ForumFilter filter = new ForumFilter(id, authenticatedUser, owner);
+      filter.setClosed(closed != null && (closed.equals("true") || closed.equals("false")) ? closed : null);
+      filter.setLocked(locked != null && (locked.equals("true") || locked.equals("false")) ? locked : null);
+      ListAccess<Forum> listAccess = forumService.getForumsWithListAccess(filter);
+      Forum[] forums = listAccess.load(offset, limit);
 
       List<ForumJson> forumJsons = new ArrayList<ForumJson>();
-      ForumService forumService = getForumService();
-      ForumFilter forumFilter = new ForumFilter(id, false).userId(authenticatedUser);
-      List<Forum> forums = forumService.getForums(forumFilter);
-      for (Forum forum : forums) {
-        ForumJson forumJson = new ForumJson(forum);
-        forumJson.setHref(RestUtils.getRestUrl(FORUMS, forum.getId(), uriInfo.getPath()));
+      for (int i = 0; i < forums.length; i++) {
+        ForumJson forumJson = new ForumJson(forums[i]);
+        forumJson.setHref(RestUtils.getRestUrl(FORUMS, forums[i].getId(), uriInfo.getPath()));
         forumJsons.add(forumJson);
       }
 
@@ -179,7 +196,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       result.setLimit(limit);
       result.setOffset(offset);
       if (returnSize) {
-        result.setSize(forumJsons.size());
+        result.setSize(listAccess.getSize());
       }
       return Response.ok(result, MediaType.APPLICATION_JSON).cacheControl(cc).build();
     } catch (Exception e) {
@@ -187,6 +204,15 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
     }
   }
   
+  @POST
+  @Path("{id}/forums")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response createForums(@Context SecurityContext sc, @Context UriInfo uriInfo,
+                                ForumJson forumData,
+                                @PathParam("id") String id) throws Exception {
+    
+    return null;
+  }
   
   public class ResultCategories extends AbstractListJson {
     private List<CategoryJson> categories;

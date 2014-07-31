@@ -66,6 +66,7 @@ import org.exoplatform.forum.service.Watch;
 import org.exoplatform.forum.service.filter.model.CategoryFilter;
 import org.exoplatform.forum.service.filter.model.ForumFilter;
 import org.exoplatform.forum.service.impl.model.CategoryListAccess;
+import org.exoplatform.forum.service.impl.model.ForumListAccess;
 import org.exoplatform.forum.service.impl.model.PostFilter;
 import org.exoplatform.forum.service.impl.model.PostListAccess;
 import org.exoplatform.forum.service.impl.model.TopicFilter;
@@ -1699,6 +1700,10 @@ public class ForumServiceImpl implements ForumService, Startable {
 
   public ListAccess<Category> getCategoriesWithListAccess(CategoryFilter filter) {
     return new CategoryListAccess(storage, filter);
+  }
+
+  public ListAccess<Forum> getForumsWithListAccess(ForumFilter filter) {
+    return new ForumListAccess(storage, filter);
   }
 
 }

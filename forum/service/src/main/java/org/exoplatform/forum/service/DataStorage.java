@@ -36,7 +36,6 @@ import org.exoplatform.forum.service.impl.model.UserProfileFilter;
 import org.exoplatform.management.annotations.Managed;
 import org.exoplatform.management.annotations.ManagedDescription;
 import org.exoplatform.services.organization.User;
-import org.exoplatform.webui.organization.UIAccountForm.SearchUserActionListener;
 
 public interface DataStorage {
 
@@ -519,4 +518,22 @@ public interface DataStorage {
    * @return
    */
   public int getCategoriesCount(CategoryFilter filter);
+  
+  /**
+   * Get list of forums by filter
+   * 
+   * @param filter
+   * @param offset
+   * @param limit
+   * @return
+   */
+  public List<Forum> getForums(ForumFilter filter, int offset, int limit);
+  
+  /**
+   * Get number of forums by filter
+   * 
+   * @param filter
+   * @return
+   */
+  public int getForumsCount(ForumFilter filter);
 }

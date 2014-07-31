@@ -1810,4 +1810,12 @@ public interface ForumService extends ForumServiceLegacy {
    * @return Categories.
    */
   ListAccess<Category> getCategoriesWithListAccess(CategoryFilter filter);
+  
+  /**
+   * Gets listAccess of forum
+   * 
+   * @param filter
+   * @return list of forums.
+   */
+  ListAccess<Forum> getForumsWithListAccess(ForumFilter filter);
 }

@@ -2072,4 +2072,14 @@ public class CachedDataStorage implements DataStorage, Startable {
   public int getCategoriesCount(CategoryFilter filter) {
     return storage.getCategoriesCount(filter);
   }
+
+  @Override
+  public List<Forum> getForums(ForumFilter filter, int offset, int limit) {
+    return storage.getForums(filter, offset, limit);
+  }
+
+  @Override
+  public int getForumsCount(ForumFilter filter) {
+    return storage.getForumsCount(filter);
+  }
 }

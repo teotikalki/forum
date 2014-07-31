@@ -31,6 +31,9 @@ public class ForumFilter implements Serializable {
   private boolean isPublic= false;
   private int offset = 0;
   private int limit = 0;
+  private String owner;
+  private String closed;
+  private String locked;
   
   public ForumFilter() {
   }
@@ -49,6 +52,12 @@ public class ForumFilter implements Serializable {
   public ForumFilter(String categoryId, boolean summary) {
     this.categoryId = categoryId;
     this.summary = summary;
+  }
+  
+  public ForumFilter(String categoryId, String userId, String owner) {
+    this.categoryId = categoryId;
+    this.userId = userId;
+    this.owner = owner;
   }
 
   public String getForumId() {
@@ -123,6 +132,30 @@ public class ForumFilter implements Serializable {
     return this;
   }
 
+  public String getOwner() {
+    return owner;
+  }
+
+  public void setOwner(String owner) {
+    this.owner = owner;
+  }
+
+  public String getClosed() {
+    return closed;
+  }
+
+  public void setClosed(String closed) {
+    this.closed = closed;
+  }
+
+  public String getLocked() {
+    return locked;
+  }
+
+  public void setLocked(String locked) {
+    this.locked = locked;
+  }
+
   public String strQuery() {
     return strQuery;
   }
@@ -156,6 +189,9 @@ public class ForumFilter implements Serializable {
       if(equals(forumId, forumFilter.forumId) == false) return false;
       if(equals(strQuery, forumFilter.strQuery) == false) return false;
       if(equals(userId, forumFilter.userId) == false) return false;
+      if(owner != null && equals(owner, forumFilter.owner) == false) return false;
+      if(closed != null && equals(closed, forumFilter.closed) == false) return false;
+      if(locked != null && equals(locked, forumFilter.locked) == false) return false;
 
     }
     return true;
@@ -176,6 +212,9 @@ public class ForumFilter implements Serializable {
     result = hashCode(result, strQuery);
     result = hashCode(result, isPublic);
     result = hashCode(result, userId);
+    result = hashCode(result, owner);
+    result = hashCode(result, closed);
+    result = hashCode(result, locked);
     result = hashCode(result, String.valueOf(summary));
     result = 31 * result + offset;
     result = 31 * result + limit;

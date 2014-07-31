@@ -8586,4 +8586,104 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       return 0;
     }
   }
+  
+  private String buildGetForumCategoryQuery(ForumFilter filter, boolean isAdmin, String catPath) {
+    String owner = filter.getOwner();
+    String currentUser = filter.userId();
+    String locked = filter.getLocked();
+    String closed = filter.getClosed();
+    
+    StringBuilder sqlQuery = jcrPathLikeAndNotLike(EXO_FORUM, catPath);
+    
+    if (Utils.CATEGORY_SPACE_ID_PREFIX.equals(filter.categoryId())) {
+      if (UserProfile.USER_GUEST.equals(filter.userId())) {
+        return null;
+      }
+      String querySpace = Utils.buildSQLQueryForumInSpaceOfUser(filter.userId());
+      if (Utils.isEmpty(querySpace)) {
+        return null;
+      } else {
+        sqlQuery.append(" AND ").append(querySpace);
+      }
+    }
+    
+    if (! CommonUtils.isEmpty(owner)) {
+      sqlQuery.append(" AND ").append(Utils.getSQLQueryByProperty("", EXO_OWNER, owner));
+    }
+    
+    if (! CommonUtils.isEmpty(closed) && closed.equals("true")) {
+      if (isAdmin) {
+        sqlQuery.append(" AND ").append(Utils.getSQLQueryByProperty("", EXO_IS_CLOSED, closed));
+      } else {
+        sqlQuery.append(" AND (").append(Utils.getSQLQueryByProperty("", EXO_IS_CLOSED, closed))
+                .append(" AND ").append(Utils.buildSQLByUserInfo(EXO_MODERATORS, UserHelper.getAllGroupAndMembershipOfUser(currentUser)))
+                .append(")");
+      }
+    } else if (! CommonUtils.isEmpty(closed) && closed.equals("false")) {
+      sqlQuery.append(" AND ").append(Utils.getSQLQueryByProperty("", EXO_IS_CLOSED, closed));
+    } else if (!isAdmin) {
+      sqlQuery.append(" AND (").append(Utils.getSQLQueryByProperty("", EXO_IS_CLOSED, "false"))
+              .append(" OR ").append(Utils.buildSQLByUserInfo(EXO_MODERATORS, UserHelper.getAllGroupAndMembershipOfUser(currentUser)))
+              .append(")");
+    }
+    
+    if (! CommonUtils.isEmpty(locked) && locked.equals("true")) {
+      if (isAdmin) {
+        sqlQuery.append(" AND ").append(Utils.getSQLQueryByProperty("", EXO_IS_LOCK, locked));
+      } else {
+        sqlQuery.append(" AND (").append(Utils.getSQLQueryByProperty("", EXO_IS_LOCK, locked))
+                .append(" AND ").append(Utils.buildSQLByUserInfo(EXO_MODERATORS, UserHelper.getAllGroupAndMembershipOfUser(currentUser)))
+                .append(")");
+      }
+    } else if (! CommonUtils.isEmpty(locked) && locked.equals("false")) {
+      sqlQuery.append(" AND ").append(Utils.getSQLQueryByProperty("", EXO_IS_LOCK, locked));
+    } else if (!isAdmin) {
+      sqlQuery.append(" AND (").append(Utils.getSQLQueryByProperty("", EXO_IS_LOCK, "false"))
+              .append(" OR ").append(Utils.buildSQLByUserInfo(EXO_MODERATORS, UserHelper.getAllGroupAndMembershipOfUser(currentUser)))
+              .append(")");
+    }
+
+    return sqlQuery.toString();
+  }
+  
+  @Override
+  public List<Forum> getForums(ForumFilter filter, int offset, int limit) {
+    SessionProvider sProvider = CommonUtils.createSystemProvider();
+    try {
+      Node catNode = getCategoryHome(sProvider).getNode(filter.categoryId());
+      boolean isAdmin = getCachedDataStorage().isAdminRole(filter.userId());
+      String sqlQuery = buildGetForumCategoryQuery(filter, isAdmin, catNode.getPath());
+      NodeIterator iter = getNodeIteratorBySQLQuery(sProvider, sqlQuery, offset, limit, false);
+
+      List<Forum> forums = new ArrayList<Forum>();
+      DataStorage storage = getCachedDataStorage();
+      while (iter.hasNext()) {
+        Node forumNode = null;
+        try {
+          forumNode = iter.nextNode();
+          forums.add(storage.getForum(filter.categoryId(), forumNode.getName()));
+        } catch (Exception e) {
+          LOG.debug("Failed to load forum node " + forumNode.getPath(), e);
+        }
+      }
+      return forums;
+    } catch (Exception e) {
+      LOG.debug("Failed to get categories ", e);
+    }
+    return null;
+  }
+
+  @Override
+  public int getForumsCount(ForumFilter filter) {
+    SessionProvider sProvider = CommonUtils.createSystemProvider();
+    try {
+      Node catNode = getCategoryHome(sProvider).getNode(filter.categoryId());
+      boolean isAdmin = getCachedDataStorage().isAdminRole(filter.userId());
+      String sqlQuery = buildGetForumCategoryQuery(filter, isAdmin, catNode.getPath());
+      NodeIterator iter = getNodeIteratorBySQLQuery(sProvider, sqlQuery, 0, 0, false);
+      return (int) iter.getSize();
+    } catch (Exception e) {
+      return 0;
+    }
+  }
 }

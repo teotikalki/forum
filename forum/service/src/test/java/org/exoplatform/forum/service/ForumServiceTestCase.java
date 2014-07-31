@@ -28,9 +28,10 @@ import javax.jcr.ImportUUIDBehavior;
 
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.io.FileUtils;
-import org.exoplatform.commons.utils.CommonsUtils;
+import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.forum.base.BaseForumServiceTestCase;
 import org.exoplatform.forum.common.UserHelper;
+import org.exoplatform.forum.service.filter.model.ForumFilter;
 import org.exoplatform.forum.service.impl.JCRDataStorage;
 import org.exoplatform.services.organization.User;
 
@@ -737,5 +738,47 @@ public class ForumServiceTestCase extends BaseForumServiceTestCase {
     SendMessageInfo msgInfo = (SendMessageInfo) messages.get(0);
     assertTrue(msgInfo.getEmailAddresses().contains(profile.getEmail()));
     assertTrue(msgInfo.getMessage().getBody().contains(postMsg));
+  }
+  public void testForumWithListAccess() throws Exception {
+    initDefaultData();
+    Forum forum1 = createdForum();
+    forum1.setIsClosed(true);
+    forum1.setModerators(new String[] {USER_ROOT});
+    Forum forum2 = createdForum();
+    forum2.setIsLock(true);
+    forum2.setModerators(new String[] {USER_ROOT});
+    Forum forum3 = createdForum();
+    forum3.setOwner(USER_JOHN);
+    forumService_.saveForum(categoryId, forum1, true);
+    forumService_.saveForum(categoryId, forum2, true);
+    forumService_.saveForum(categoryId, forum3, true);
+    
+    ForumFilter filter = new ForumFilter();
+    filter.userId(USER_ROOT);
+    filter.categoryId(categoryId);
+    //Get all forums that root can access
+    ListAccess<Forum> listAccess = forumService_.getForumsWithListAccess(filter);
+    assertEquals(4, listAccess.load(0, 10).length);
+    assertEquals(4, listAccess.getSize());
+    
+    //Get all forum owner by root
+    filter.setOwner(USER_ROOT);
+    listAccess = forumService_.getForumsWithListAccess(filter);
+    assertEquals(3, listAccess.load(0, 10).length);
+    assertEquals(3, listAccess.getSize());
+    
+    //Get all locked forum
+    filter.setOwner("");
+    filter.setLocked("true");
+    listAccess = forumService_.getForumsWithListAccess(filter);
+    assertEquals(1, listAccess.load(0, 10).length);
+    assertEquals(1, listAccess.getSize());
+    
+    //Get all closed forum
+    filter.setLocked("false");
+    filter.setClosed("true");
+    listAccess = forumService_.getForumsWithListAccess(filter);
+    assertEquals(1, listAccess.load(0, 10).length);
+    assertEquals(1, listAccess.getSize());
   }
 }
