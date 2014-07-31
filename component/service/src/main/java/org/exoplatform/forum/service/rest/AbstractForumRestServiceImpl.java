@@ -1,17 +1,19 @@
 package org.exoplatform.forum.service.rest;
 
 import java.net.URI;
+import java.util.Arrays;
 
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.RuntimeDelegate;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.exoplatform.commons.utils.CommonsUtils;
 import org.exoplatform.forum.common.CommonUtils;
+import org.exoplatform.forum.common.UserHelper;
 import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.ForumService;
+import org.exoplatform.forum.service.Utils;
 import org.exoplatform.services.rest.impl.RuntimeDelegateImpl;
 import org.exoplatform.services.security.ConversationState;
 import org.exoplatform.services.security.Identity;
@@ -76,12 +78,14 @@ public abstract class AbstractForumRestServiceImpl {
    * @param userId
    * @return
    */
-  public boolean hasViewCategoryPermission(Category category, String userId) {
+  public boolean hasCanViewCategory(Category category, String userId) {
     String[] usersPrivates = category.getUserPrivate();
-    return (usersPrivates == null) 
-            || ArrayUtils.contains(usersPrivates, userId)
-            || (usersPrivates.length == 1 && ArrayUtils.contains(usersPrivates, ""))
-            || (usersPrivates.length == 1 && ArrayUtils.contains(usersPrivates, " "));
+    return (CommonUtils.isEmpty(usersPrivates)) || 
+        Utils.hasPermission(Arrays.asList(usersPrivates), UserHelper.getAllGroupAndMembershipOfUser(userId));
+  }
+
+  public boolean isManagerCategory(String userId) throws Exception {
+    return getForumService().isAdminRole(userId);
   }
 
   protected ForumService getForumService() {

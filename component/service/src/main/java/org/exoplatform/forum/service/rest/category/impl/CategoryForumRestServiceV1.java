@@ -28,13 +28,11 @@ import org.exoplatform.forum.service.rest.RestUtils;
 import org.exoplatform.forum.service.rest.api.CategoryForumRestService;
 import org.exoplatform.forum.service.rest.model.AbstractListJson;
 import org.exoplatform.forum.service.rest.model.CategoryJson;
-import org.exoplatform.services.security.ConversationState;
 
 @Path("v1/forum/categories")
 public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl implements CategoryForumRestService {
 
   @GET
-  @RolesAllowed("users")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getCategories(@Context SecurityContext sc, @Context UriInfo uriInfo,
                                  @QueryParam("fields") String fields,
@@ -42,7 +40,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
                                  @QueryParam("offset") int offset,
                                  @QueryParam("limit") int limit) throws Exception {
     try {
-      String authenticatedUser = ConversationState.getCurrent().getIdentity().getUserId();
+      String authenticatedUser = getUserId(sc, uriInfo);
       
       limit = limit <= 0 ? DEFAULT_LIMIT : Math.min(HARD_LIMIT, limit);
       offset = offset < 0 ? DEFAULT_OFFSET : offset;
@@ -59,7 +57,7 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
         json.setHref(RestUtils.getRestUrl(CATEGORIES, categories[i].getId(), uriInfo.getPath()));
         jsons.add(json);
       }
-      
+
       ResultCategories result = new ResultCategories(jsons);
       result.setLimit(limit);
       result.setOffset(offset);
@@ -81,12 +79,12 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
                                    @QueryParam("fields") String fields,
                                    @PathParam("id") String id) throws Exception {
     try {
-      String authenticatedUser = ConversationState.getCurrent().getIdentity().getUserId();
+      String authenticatedUser = getUserId(sc, uriInfo);
 
       ForumService forumService = getForumService();
       Category category = forumService.getCategory(id);
       
-      if (category == null || ! hasViewCategoryPermission(category, authenticatedUser)) {
+      if (category == null || ! hasCanViewCategory(category, authenticatedUser)) {
         throw new WebApplicationException(Response.Status.UNAUTHORIZED); 
       }
       
@@ -101,18 +99,19 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   
   @PUT
   @Path("{id}")
+  @RolesAllowed("users")
   @Produces(MediaType.APPLICATION_JSON)
   public Response updateCategoryById(@Context SecurityContext sc,
                                       @Context UriInfo uriInfo,
                                       @QueryParam("fields") String fields,
                                       @PathParam("id") String id) throws Exception {
     try {
-      String authenticatedUser = ConversationState.getCurrent().getIdentity().getUserId();
+      String authenticatedUser = getUserId(sc, uriInfo);
 
       ForumService forumService = getForumService();
       Category category = forumService.getCategory(id);
       
-      if (category == null || ! hasViewCategoryPermission(category, authenticatedUser)) {
+      if (category == null || !isManagerCategory(authenticatedUser)) {
         throw new WebApplicationException(Response.Status.UNAUTHORIZED); 
       }
       
@@ -127,19 +126,20 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   
   @DELETE
   @Path("{id}")
+  @RolesAllowed("users")
   @Produces(MediaType.APPLICATION_JSON)
   public Response deleteCategoryById(@Context SecurityContext sc,
                                       @Context UriInfo uriInfo,
                                       @QueryParam("fields") String fields,
                                       @PathParam("id") String id) throws Exception {
     try {
-      String authenticatedUser = ConversationState.getCurrent().getIdentity().getUserId();
+      String authenticatedUser = getUserId(sc, uriInfo);;
 
       ForumService forumService = getForumService();
       Category category = forumService.getCategory(id);
       
-      if (category == null || ! hasViewCategoryPermission(category, authenticatedUser)) {
-        throw new WebApplicationException(Response.Status.UNAUTHORIZED); 
+      if (category == null || !isManagerCategory(authenticatedUser)) {
+        throw new WebApplicationException(Response.Status.UNAUTHORIZED);
       }
       
       CategoryJson json = new CategoryJson(category);
@@ -168,5 +168,4 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       this.categories = categories;
     }
   }
-
 }
