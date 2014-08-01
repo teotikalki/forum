@@ -22,6 +22,7 @@ import org.exoplatform.forum.service.rest.RestUtils;
 import org.exoplatform.forum.service.rest.api.ForumForumRestService;
 import org.exoplatform.forum.service.rest.model.CategoryJson;
 import org.exoplatform.forum.service.rest.model.ForumJson;
+import org.exoplatform.forum.service.rest.model.HrefLink;
 
 @Path("v1/forum/forums")
 public class ForumForumRestServiceV1 extends AbstractForumRestServiceImpl implements ForumForumRestService {
@@ -30,22 +31,26 @@ public class ForumForumRestServiceV1 extends AbstractForumRestServiceImpl implem
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getForum(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                            @QueryParam("fields") String fields,
-                            @QueryParam("expand") String expand,
                             @PathParam("id") String id) throws Exception {
     try {
       String userId = getUserId(sc, uriInfo);
+      String fields = getQueryValueFields(uriInfo);
+      String expand = getQueryValueExpand(uriInfo);
+      
       Forum forum = (Forum) getForumService().getObjectNameById(id, Utils.FORUM);
 
       if (forum == null || !hasCanViewForum(forum, userId)) {
         return Response.status(Response.Status.UNAUTHORIZED).build();
       }
       ForumJson json = new ForumJson(forum);
+      json.setHref(RestUtils.getRestUrl(FORUMS, forum.getId(), uriInfo.getPath()));
       //
+      String categoryHref = RestUtils.getRestUrl(CATEGORIES, forum.getCategoryId(), uriInfo.getPath());
       if ("category".equals(expand)) {
-        json.setHref(new CategoryJson(getForumService().getCategory(forum.getCategoryId())));
+        HrefLink href = new CategoryJson(getForumService().getCategory(forum.getCategoryId()));
+        json.setCategory(href.setHref(categoryHref));
       } else {
-        json.setHref(RestUtils.getRestUrl(FORUMS, id, uriInfo.getPath()));
+        json.setCategory(new HrefLink(categoryHref));
       }
       
       return Response.ok(json, MediaType.APPLICATION_JSON).cacheControl(cc).build();
@@ -58,11 +63,12 @@ public class ForumForumRestServiceV1 extends AbstractForumRestServiceImpl implem
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response updateForum(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                           @QueryParam("fields") String fields,
-                           @QueryParam("expand") String expand,
                            @PathParam("id") String id) throws Exception {
     try {
       String userId = getUserId(sc, uriInfo);
+      String fields = getQueryValueFields(uriInfo);
+      String expand = getQueryValueExpand(uriInfo);
+      //
       Forum forum = (Forum) getForumService().getObjectNameById(id, Utils.FORUM);
       
       if (forum == null || !hasCanViewForum(forum, userId)) {
@@ -80,11 +86,12 @@ public class ForumForumRestServiceV1 extends AbstractForumRestServiceImpl implem
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response removeForum(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                              @QueryParam("fields") String fields,
-                              @QueryParam("expand") String expand,
                               @PathParam("id") String id) throws Exception {
     try {
       String userId = getUserId(sc, uriInfo);
+      String fields = getQueryValueFields(uriInfo);
+      String expand = getQueryValueExpand(uriInfo);
+      //
       Forum forum = (Forum) getForumService().getObjectNameById(id, Utils.FORUM);
       
       if (forum == null || !isManagerCategory(userId)) {
@@ -99,14 +106,15 @@ public class ForumForumRestServiceV1 extends AbstractForumRestServiceImpl implem
   }
 
   @GET
-  @Path("/{id}")
+  @Path("/{id}/topics")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getTopics(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                              @QueryParam("fields") String fields,
-                              @QueryParam("expand") String expand,
                               @PathParam("id") String id) throws Exception {
     try {
       String userId = getUserId(sc, uriInfo);
+      String fields = getQueryValueFields(uriInfo);
+      String expand = getQueryValueExpand(uriInfo);
+      //
       Forum forum = (Forum) getForumService().getObjectNameById(id, Utils.FORUM);
       
       if (forum == null || !hasCanViewForum(forum, userId)) {
@@ -124,11 +132,12 @@ public class ForumForumRestServiceV1 extends AbstractForumRestServiceImpl implem
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response createTopic(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                            @QueryParam("fields") String fields,
-                            @QueryParam("expand") String expand,
                             @PathParam("id") String id) throws Exception {
     try {
       String userId = getUserId(sc, uriInfo);
+      String fields = getQueryValueFields(uriInfo);
+      String expand = getQueryValueExpand(uriInfo);
+      //
       Forum forum = (Forum) getForumService().getObjectNameById(id, Utils.FORUM);
       
       if (forum == null || !hasCanViewForum(forum, userId)) {

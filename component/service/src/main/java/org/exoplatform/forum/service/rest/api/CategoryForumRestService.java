@@ -40,64 +40,44 @@ public interface CategoryForumRestService extends AbstractForumRest {
    * Process to return all categories in json format
    * 
    * @param uriInfo
-   * @param returnSize true if the response must contain the total size of all categories found
-   * @param offset index of the first category to return 
-   * @param limit the maximum number of categories to return
    * @return
    * @throws Exception
    */
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getCategories(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                                 @QueryParam("fields") String fields,
-                                 @QueryParam("returnSize") boolean returnSize,
-                                 @QueryParam("offset") int offset,
-                                 @QueryParam("limit") int limit) throws Exception;
+  public Response getCategories(@Context SecurityContext sc, @Context UriInfo uriInfo) throws Exception;
   
   @GET
   @Path("{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getCategoryById(@Context SecurityContext sc,
-                                   @Context UriInfo uriInfo,
-                                   @QueryParam("fields") String fields,
+  public Response getCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
                                    @PathParam("id") String id) throws Exception;
   
   @PUT
   @Path("{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response updateCategoryById(@Context SecurityContext sc,
-                                      @Context UriInfo uriInfo,
-                                      @QueryParam("fields") String fields,
+  public Response updateCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
                                       @PathParam("id") String id) throws Exception;
   
   @DELETE
   @Path("{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response deleteCategoryById(@Context SecurityContext sc,
-                                      @Context UriInfo uriInfo,
-                                      @QueryParam("fields") String fields,
+  public Response deleteCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
                                       @PathParam("id") String id) throws Exception;
 
   /**
    * Process to return all forums in the category.
    * 
    * @param uriInfo
-   * @param returnSize true if the response must contain the total size of all forums found
-   * @param offset index of the first forum to return 
-   * @param limit the maximum number of forums to return
    * @param id The category's id.
    */
   @GET
   @Path("{id}/forums")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getForums(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                            @QueryParam("fields") String fields,
                             @QueryParam("owner") String owner,
                             @QueryParam("locked") String locked,
                             @QueryParam("closed") String closed,
-                            @QueryParam("returnSize") boolean returnSize,
-                            @QueryParam("offset") int offset,
-                            @QueryParam("limit") int limit,
                             @PathParam("id") String id) throws Exception;
   
   /**

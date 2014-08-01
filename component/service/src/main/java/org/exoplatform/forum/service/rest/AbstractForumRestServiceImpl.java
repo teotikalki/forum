@@ -9,6 +9,9 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.RuntimeDelegate;
 
+import org.apache.commons.lang.CharEncoding;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.exoplatform.commons.utils.CommonsUtils;
 import org.exoplatform.forum.common.CommonUtils;
 import org.exoplatform.forum.common.UserHelper;
@@ -65,16 +68,16 @@ public abstract class AbstractForumRestServiceImpl {
   
   protected String getQueryParam(UriInfo uriInfo, String key) {
     URI uri = uriInfo.getRequestUri();
-    String requestString = uri.getQuery();
-    if (requestString == null) {
+    if (uri.getQuery() == null) {
       return null;
     }
-    String[] queryParts = requestString.split("&");
-    for (String queryPart : queryParts) {
-      if (queryPart.equalsIgnoreCase(key)) {
-        return queryPart.substring(queryPart.indexOf("=") + 1, queryPart.length());
+    List<NameValuePair> params = URLEncodedUtils.parse(uri, CharEncoding.UTF_8);
+    for (NameValuePair param : params) {
+      if (param.getName().equalsIgnoreCase(key)) {
+        return param.getValue();
       }
     }
+
     return null;
   }
   
@@ -92,16 +95,16 @@ public abstract class AbstractForumRestServiceImpl {
 
   protected Integer getQueryValueLimit(UriInfo uriInfo) {
     String limit = getQueryParam(uriInfo, "limit");
-    return (limit != null) ? Integer.valueOf(limit) : null;
+    return (limit != null) ? Integer.valueOf(limit) : -1;
   }
 
   protected Integer getQueryValueOffset(UriInfo uriInfo) {
     String offset = getQueryParam(uriInfo, "offset");
-    return (offset != null) ? Integer.valueOf(offset) : null;
+    return (offset != null) ? Integer.valueOf(offset) : -1;
   }
 
   protected boolean getQueryValueReturnSize(UriInfo uriInfo) {
-    return Boolean.valueOf(getQueryParam(uriInfo, "returnSize").trim());
+    return Boolean.valueOf(getQueryParam(uriInfo, "returnSize"));
   }
 
   public boolean hasCanViewForum(Forum forum, String userId) {

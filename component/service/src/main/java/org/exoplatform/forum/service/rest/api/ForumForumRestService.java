@@ -25,7 +25,5 @@ public interface ForumForumRestService extends AbstractForumRest {
    */
   @GET
   public Response getForum(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                            @QueryParam("fields") String fields,
-                            @QueryParam("expand") String expand,
                             @PathParam("id") String id) throws Exception;
 }

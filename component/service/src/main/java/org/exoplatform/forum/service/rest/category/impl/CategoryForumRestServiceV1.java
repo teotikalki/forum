@@ -37,17 +37,16 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getCategories(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                                 @QueryParam("fields") String fields,
-                                 @QueryParam("returnSize") boolean returnSize,
-                                 @QueryParam("offset") int offset,
-                                 @QueryParam("limit") int limit) throws Exception {
+  public Response getCategories(@Context SecurityContext sc, @Context UriInfo uriInfo) throws Exception {
     try {
-      String authenticatedUser = getUserId(sc, uriInfo);
-      
+      String fields = getQueryValueFields(uriInfo);
+      boolean returnSize = getQueryValueReturnSize(uriInfo);
+      int offset = getQueryValueOffset(uriInfo);
+      int limit = getQueryValueLimit(uriInfo);
       limit = limit <= 0 ? DEFAULT_LIMIT : Math.min(HARD_LIMIT, limit);
       offset = offset < 0 ? DEFAULT_OFFSET : offset;
 
+      String authenticatedUser = getUserId(sc, uriInfo);
       ForumService forumService = getForumService();
       CategoryFilter filter = new CategoryFilter();
       filter.setAuthenticatedUser(authenticatedUser);
@@ -78,9 +77,9 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @Path("{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                                   @QueryParam("fields") String fields,
                                    @PathParam("id") String id) throws Exception {
     try {
+      String fields = getQueryValueFields(uriInfo);
       String authenticatedUser = getUserId(sc, uriInfo);
 
       ForumService forumService = getForumService();
@@ -104,9 +103,9 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @RolesAllowed("users")
   @Produces(MediaType.APPLICATION_JSON)
   public Response updateCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                                      @QueryParam("fields") String fields,
                                       @PathParam("id") String id) throws Exception {
     try {
+      String fields = getQueryValueFields(uriInfo);
       String authenticatedUser = getUserId(sc, uriInfo);
 
       ForumService forumService = getForumService();
@@ -130,9 +129,9 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @RolesAllowed("users")
   @Produces(MediaType.APPLICATION_JSON)
   public Response deleteCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                                      @QueryParam("fields") String fields,
                                       @PathParam("id") String id) throws Exception {
     try {
+      String fields = getQueryValueFields(uriInfo);
       String authenticatedUser = getUserId(sc, uriInfo);;
 
       ForumService forumService = getForumService();
@@ -157,13 +156,9 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @Path("{id}/forums")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getForums(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                            @QueryParam("fields") String fields,
                             @QueryParam("owner") String owner,
                             @QueryParam("locked") String locked,
                             @QueryParam("closed") String closed,
-                            @QueryParam("returnSize") boolean returnSize,
-                            @QueryParam("offset") int offset,
-                            @QueryParam("limit") int limit,
                             @PathParam("id") String id) throws Exception {
     try {
       String authenticatedUser = getUserId(sc, uriInfo);
@@ -174,7 +169,11 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       if (category == null || ! hasCanViewCategory(category, authenticatedUser)) {
         return Response.status(Status.UNAUTHORIZED).build();
       }
-      
+      //
+      String fields = getQueryValueFields(uriInfo);
+      boolean returnSize = getQueryValueReturnSize(uriInfo);
+      int offset = getQueryValueOffset(uriInfo);
+      int limit = getQueryValueLimit(uriInfo);
       limit = limit <= 0 ? DEFAULT_LIMIT : Math.min(HARD_LIMIT, limit);
       offset = offset < 0 ? DEFAULT_OFFSET : offset;
       
