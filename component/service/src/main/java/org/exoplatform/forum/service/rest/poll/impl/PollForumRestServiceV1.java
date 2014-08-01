@@ -15,8 +15,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
 import org.exoplatform.forum.service.rest.api.PollForumRestService;
-import org.exoplatform.forum.service.rest.model.AbstractListJson;
-import org.exoplatform.forum.service.rest.model.PollJson;
+import org.exoplatform.forum.service.rest.model.AbstractListEntity;
+import org.exoplatform.forum.service.rest.model.PollEntity;
 
 @Path("v1/forum/polls")
 public class PollForumRestServiceV1 extends AbstractForumRestServiceImpl implements PollForumRestService {
@@ -35,10 +35,10 @@ public class PollForumRestServiceV1 extends AbstractForumRestServiceImpl impleme
     }
   }
   
-  public class ResultPoll extends AbstractListJson {
-    List<PollJson> polls;
+  public class ResultPoll extends AbstractListEntity {
+    List<PollEntity> polls;
 
-    public ResultPoll(List<PollJson> jsons) {
+    public ResultPoll(List<PollEntity> jsons) {
       polls = jsons;
     }
   }

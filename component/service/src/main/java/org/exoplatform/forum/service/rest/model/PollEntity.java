@@ -19,60 +19,59 @@ package org.exoplatform.forum.service.rest.model;
 import org.exoplatform.forum.service.rest.RestUtils;
 import org.exoplatform.poll.service.Poll;
 
-public class PollJson extends AbstractJson {
-  private static final long serialVersionUID = 1L;
+public class PollEntity extends AbstractEntity {
 
-  public PollJson(Poll poll) {
-    put("id", poll.getId());
-    put("name", poll.getQuestion());
-    put("owner", poll.getOwner());
-    put("createdDate", RestUtils.formatDateToISO8601(poll.getCreatedDate()));
-    put("updatedDate", RestUtils.formatDateToISO8601(poll.getModifiedDate()));
+  public PollEntity(Poll poll) {
+    setProperty("id", poll.getId());
+    setProperty("name", poll.getQuestion());
+    setProperty("owner", poll.getOwner());
+    setProperty("createdDate", RestUtils.formatDateToISO8601(poll.getCreatedDate()));
+    setProperty("updatedDate", RestUtils.formatDateToISO8601(poll.getModifiedDate()));
     //
-    put("title", poll.getQuestion());
-    put("timeout", String.valueOf(poll.getTimeOut()));
+    setProperty("title", poll.getQuestion());
+    setProperty("timeout", String.valueOf(poll.getTimeOut()));
     //
-    put("closed", String.valueOf(poll.getIsClosed()));
-    put("againVote", String.valueOf(poll.getIsAgainVote()));
-    put("multiCheck", String.valueOf(poll.getIsMultiCheck()));
+    setProperty("closed", String.valueOf(poll.getIsClosed()));
+    setProperty("againVote", String.valueOf(poll.getIsAgainVote()));
+    setProperty("multiCheck", String.valueOf(poll.getIsMultiCheck()));
     //
-    put("options", poll.getOption());
-    put("vote", poll.getVote());
+    setProperty("options", poll.getOption());
+    setProperty("vote", poll.getVote());
   }
 
-  public void setTopic(HrefLink topic) {
-    put("topic", topic);
+  public void setTopic(BaseEntity topic) {
+    setProperty("topic", topic);
   }
 
   public void setTitle(String title) {
-    put("title", title);
+    setProperty("title", title);
   }
 
   public void setTimeout(String timeout) {
-    put("timeout", timeout);
+    setProperty("timeout", timeout);
   }
 
   public void setClosed(String closed) {
-    put("closed", closed);
+    setProperty("closed", closed);
   }
 
   public void setAgainVote(String againVote) {
-    put("againVote", againVote);
+    setProperty("againVote", againVote);
   }
 
   public void setMultiCheck(String multiCheck) {
-    put("multiCheck", multiCheck);
+    setProperty("multiCheck", multiCheck);
   }
 
   public void setOptions(String[] options) {
-    put("options", options);
+    setProperty("options", options);
   }
 
   public void setVote(String[] vote) {
-    put("vote", vote);
+    setProperty("vote", vote);
   }
 
   public void setUsersVotes(String[] usersVotes) {
-    put("usersVotes", usersVotes);
+    setProperty("usersVotes", usersVotes);
   }
 }

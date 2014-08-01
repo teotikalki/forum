@@ -16,31 +16,31 @@
  */
 package org.exoplatform.forum.service.rest.model;
 
-import org.exoplatform.forum.service.ForumAttachment;
 
-public class AttachmentJson extends HrefLink {
-  private static final long serialVersionUID = 1L;
-
-  public AttachmentJson(ForumAttachment att) {
-    put("id", att.getId());
-    put("name", att.getName());
-    put("mimeType", att.getMimeType());
-    put("weight", att.getSize());
-  }
+public abstract class AbstractEntity extends BaseEntity {
 
   public void setId(String id) {
-    put("id", id);
+    setProperty("id", id);
+  }
+
+  public void setOwner(String owner) {
+    setProperty("owner", owner);
   }
 
   public void setName(String name) {
-    put("name", name);
+    setProperty("name", name);
   }
 
-  public void setMimeType(String mimeType) {
-    put("mimeType", mimeType);
+  public void setCreatedDate(String createdDate) {
+    setProperty("createdDate", createdDate);
   }
 
-  public void setWeight(Long weight) {
-    put("weight", weight);
+  public void setUpdatedDate(String updatedDate) {
+    setProperty("updatedDate", updatedDate);
+  }
+  
+  @Override
+  public String toString() {
+    return datas.toString();
   }
 }

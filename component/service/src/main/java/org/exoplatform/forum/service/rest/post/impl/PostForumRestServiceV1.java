@@ -15,8 +15,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
 import org.exoplatform.forum.service.rest.api.PostForumRestService;
-import org.exoplatform.forum.service.rest.model.AbstractListJson;
-import org.exoplatform.forum.service.rest.model.PostJson;
+import org.exoplatform.forum.service.rest.model.AbstractListEntity;
+import org.exoplatform.forum.service.rest.model.PostEntity;
 
 @Path("v1/forum/posts")
 public class PostForumRestServiceV1 extends AbstractForumRestServiceImpl implements PostForumRestService {
@@ -35,10 +35,10 @@ public class PostForumRestServiceV1 extends AbstractForumRestServiceImpl impleme
     }
   }
   
-  public class ResultPosts extends AbstractListJson {
-    List<PostJson> posts;
+  public class ResultPosts extends AbstractListEntity {
+    List<PostEntity> posts;
 
-    public ResultPosts(List<PostJson> jsons) {
+    public ResultPosts(List<PostEntity> jsons) {
       posts = jsons;
     }
   }

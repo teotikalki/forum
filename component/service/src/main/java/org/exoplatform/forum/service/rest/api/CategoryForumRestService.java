@@ -31,7 +31,7 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
 import org.exoplatform.forum.service.rest.AbstractForumRest;
-import org.exoplatform.forum.service.rest.model.ForumJson;
+import org.exoplatform.forum.service.rest.model.ForumEntity;
 
 
 public interface CategoryForumRestService extends AbstractForumRest {
@@ -90,6 +90,6 @@ public interface CategoryForumRestService extends AbstractForumRest {
   @Path("{id}/forums")
   @Produces(MediaType.APPLICATION_JSON)
   public Response createForum(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                                ForumJson forumData,
+                                ForumEntity forumData,
                                 @PathParam("id") String id) throws Exception;
 }

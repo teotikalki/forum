@@ -17,34 +17,31 @@
 package org.exoplatform.forum.service.rest.model;
 
 
-public abstract class AbstractListJson {
+public class Entity<T> {
 
-  private int size   = -1;
-  private int limit  = -1;
-  private int offset = 0;
-
-  public int getSize() {
-    return size;
+  private String fields;
+  private T      entity;
+  
+  public Entity(T entity, String fields) {
+    this.entity = entity;
+    this.fields = fields;
   }
 
-  public void setSize(int size) {
-    this.size = size;
+  public Entity<T> entity(T entity) {
+    this.entity = entity;
+    return this;
   }
 
-  public int getLimit() {
-    return limit;
+  public T entity() {
+    return entity;
   }
 
-  public void setLimit(int limit) {
-    this.limit = limit;
+  public String fields() {
+    return fields;
   }
 
-  public int getOffset() {
-    return offset;
+  public Entity<T> fields(String fields) {
+    this.fields = fields;
+    return this;
   }
-
-  public void setOffset(int offset) {
-    this.offset = offset;
-  }
-
 }

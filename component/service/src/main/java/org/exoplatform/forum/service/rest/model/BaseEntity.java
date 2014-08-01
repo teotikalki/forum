@@ -17,32 +17,45 @@
 package org.exoplatform.forum.service.rest.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-public class HrefLink extends HashMap<String, Object> {
-  private static final long serialVersionUID = 1L;
+public class BaseEntity {
+  protected Map<String, Object> datas = new HashMap<String, Object>();
 
-  public HrefLink() {
+  public BaseEntity() {
   }
 
-  public HrefLink(String href) {
+  protected void setProperty(String name, Object value) {
+    datas.put(name, value);
+  }
+
+  protected Object getProperty(String name) {
+    return datas.get(name);
+  }
+
+  public BaseEntity(String href) {
     if (!StringUtils.isEmpty(href)) {
-      put("href", href);
+      setProperty("href", href);
     }
   }
-  
-  public HrefLink setHref(String href) {
-    put("href", href);
+
+  public BaseEntity setHref(String href) {
+    setProperty("href", href);
     return this;
   }
 
-  public HrefLink setHref(HrefLink href) {
-    put("href", href);
+  public BaseEntity setHref(BaseEntity href) {
+    setProperty("href", href);
     return this;
   }
-  
+
   public String getHref() {
-    return (String) get("href");
+    return (String) datas.get("href");
+  }
+
+  public Map<String, Object> getData() {
+    return datas;
   }
 }

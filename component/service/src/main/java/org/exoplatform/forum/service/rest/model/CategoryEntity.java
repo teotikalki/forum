@@ -19,52 +19,51 @@ package org.exoplatform.forum.service.rest.model;
 import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.rest.RestUtils;
 
-public class CategoryJson extends AbstractJson {
-  private final static long serialVersionUID = 1L;
+public class CategoryEntity extends AbstractEntity {
 
-  public CategoryJson(Category cat) {
-    put("id", cat.getId());
-    put("name", cat.getCategoryName());
-    put("owner", cat.getOwner());
-    put("createdDate", RestUtils.formatDateToISO8601(cat.getCreatedDate()));
-    put("updatedDate", RestUtils.formatDateToISO8601(cat.getModifiedDate()));
+  public CategoryEntity(Category cat) {
+    setProperty("id", cat.getId());
+    setProperty("name", cat.getCategoryName());
+    setProperty("owner", cat.getOwner());
+    setProperty("createdDate", RestUtils.formatDateToISO8601(cat.getCreatedDate()));
+    setProperty("updatedDate", RestUtils.formatDateToISO8601(cat.getModifiedDate()));
     
-    put("description", cat.getDescription());
-    put("position", String.valueOf(cat.getCategoryOrder()));
+    setProperty("description", cat.getDescription());
+    setProperty("position", String.valueOf(cat.getCategoryOrder()));
     //
-    put("userPrivates", cat.getUserPrivate());
-    put("moderators", cat.getModerators());
-    put("topicCreators", cat.getCreateTopicRole());
-    put("posters", cat.getPoster());
-    put("viewers", cat.getViewer());
+    setProperty("userPrivates", cat.getUserPrivate());
+    setProperty("moderators", cat.getModerators());
+    setProperty("topicCreators", cat.getCreateTopicRole());
+    setProperty("posters", cat.getPoster());
+    setProperty("viewers", cat.getViewer());
   }
 
   public void setPosition(String position) {
-    put("position", position);
+    setProperty("position", position);
   }
 
   public void setDescription(String description) {
-    put("description", description);
+    setProperty("description", description);
   }
 
   public void setModerators(String[] moderators) {
-    put("moderators", moderators);
+    setProperty("moderators", moderators);
   }
 
   public void setTopicCreators(String[] topicCreators) {
-    put("topicCreators", topicCreators);
+    setProperty("topicCreators", topicCreators);
   }
 
   public void setPosters(String[] posters) {
-    put("posters", posters);
+    setProperty("posters", posters);
   }
 
   public void setViewers(String[] viewers) {
-    put("viewers", viewers);
+    setProperty("viewers", viewers);
   }
 
   public void setUserPrivates(String[] userPrivates) {
-    put("userPrivates", userPrivates);
+    setProperty("userPrivates", userPrivates);
   }
   
 }

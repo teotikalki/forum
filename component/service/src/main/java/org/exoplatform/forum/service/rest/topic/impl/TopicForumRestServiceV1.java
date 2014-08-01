@@ -16,8 +16,8 @@ import javax.ws.rs.core.UriInfo;
 import org.exoplatform.forum.service.impl.model.TopicFilter;
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
 import org.exoplatform.forum.service.rest.api.TopicForumRestService;
-import org.exoplatform.forum.service.rest.model.AbstractListJson;
-import org.exoplatform.forum.service.rest.model.TopicJson;
+import org.exoplatform.forum.service.rest.model.AbstractListEntity;
+import org.exoplatform.forum.service.rest.model.TopicEntity;
 
 @Path("v1/forum/topics")
 public class TopicForumRestServiceV1 extends AbstractForumRestServiceImpl implements TopicForumRestService {
@@ -40,10 +40,10 @@ public class TopicForumRestServiceV1 extends AbstractForumRestServiceImpl implem
     }
   }
   
-  public class ResultTopics extends AbstractListJson {
-    List<TopicJson> topics;
+  public class ResultTopics extends AbstractListEntity {
+    List<TopicEntity> topics;
 
-    public ResultTopics(List<TopicJson> jsons) {
+    public ResultTopics(List<TopicEntity> jsons) {
       topics = jsons;
     }
   }

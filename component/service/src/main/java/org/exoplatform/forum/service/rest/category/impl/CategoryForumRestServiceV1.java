@@ -2,6 +2,7 @@ package org.exoplatform.forum.service.rest.category.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
@@ -28,9 +29,9 @@ import org.exoplatform.forum.service.filter.model.ForumFilter;
 import org.exoplatform.forum.service.rest.AbstractForumRestServiceImpl;
 import org.exoplatform.forum.service.rest.RestUtils;
 import org.exoplatform.forum.service.rest.api.CategoryForumRestService;
-import org.exoplatform.forum.service.rest.model.AbstractListJson;
-import org.exoplatform.forum.service.rest.model.CategoryJson;
-import org.exoplatform.forum.service.rest.model.ForumJson;
+import org.exoplatform.forum.service.rest.model.AbstractListEntity;
+import org.exoplatform.forum.service.rest.model.CategoryEntity;
+import org.exoplatform.forum.service.rest.model.ForumEntity;
 
 @Path("v1/forum/categories")
 public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl implements CategoryForumRestService {
@@ -53,18 +54,18 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       
       ListAccess<Category> listAccess = forumService.getCategoriesWithListAccess(filter);
       Category[] categories = listAccess.load(offset, limit);
-      List<CategoryJson> jsons = new ArrayList<CategoryJson>();
+      List<Map<String, Object>> data = new ArrayList<Map<String,Object>>();
       for (int i = 0; i < categories.length; i++) {
-        CategoryJson json = new CategoryJson(categories[i]);
-        json.setHref(RestUtils.getRestUrl(CATEGORIES, categories[i].getId(), uriInfo.getPath()));
-        jsons.add(json);
+        CategoryEntity entity = new CategoryEntity(categories[i]);
+        entity.setHref(RestUtils.getRestUrl(CATEGORIES, categories[i].getId(), uriInfo.getPath()));
+        data.add(entity.getData());
       }
 
-      ResultCategories result = new ResultCategories(jsons);
+      ResultCategories result = new ResultCategories(data);
       result.setLimit(limit);
       result.setOffset(offset);
       if (returnSize) {
-        result.setSize(jsons.size());
+        result.setSize(data.size());
       }
       
       return Response.ok(result, MediaType.APPLICATION_JSON).cacheControl(cc).build();
@@ -89,10 +90,10 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
         return Response.status(Response.Status.UNAUTHORIZED).build();
       }
       
-      CategoryJson json = new CategoryJson(category);
-      json.setHref(RestUtils.getRestUrl(CATEGORIES, category.getId(), uriInfo.getPath()));
+      CategoryEntity entity = new CategoryEntity(category);
+      entity.setHref(RestUtils.getRestUrl(CATEGORIES, category.getId(), uriInfo.getPath()));
       
-      return Response.ok(json, MediaType.APPLICATION_JSON).cacheControl(cc).build();
+      return Response.ok(entity.getData(), MediaType.APPLICATION_JSON).cacheControl(cc).build();
     } catch (Exception e) {
       return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
@@ -115,10 +116,10 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
         return Response.status(Response.Status.UNAUTHORIZED).build();
       }
       
-      CategoryJson json = new CategoryJson(category);
-      json.setHref(RestUtils.getRestUrl(CATEGORIES, category.getId(), uriInfo.getPath()));
+      CategoryEntity entity = new CategoryEntity(category);
+      entity.setHref(RestUtils.getRestUrl(CATEGORIES, category.getId(), uriInfo.getPath()));
       
-      return Response.ok(json, MediaType.APPLICATION_JSON).cacheControl(cc).build();
+      return Response.ok(entity.getData(), MediaType.APPLICATION_JSON).cacheControl(cc).build();
     } catch (Exception e) {
       return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
@@ -141,12 +142,12 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
         return Response.status(Response.Status.UNAUTHORIZED).build();
       }
       
-      CategoryJson json = new CategoryJson(category);
-      json.setHref(RestUtils.getRestUrl(CATEGORIES, category.getId(), uriInfo.getPath()));
+      CategoryEntity entity = new CategoryEntity(category);
+      entity.setHref(RestUtils.getRestUrl(CATEGORIES, category.getId(), uriInfo.getPath()));
       //
       forumService.removeCategory(id);
       
-      return Response.ok(json, MediaType.APPLICATION_JSON).cacheControl(cc).build();
+      return Response.ok(entity.getData(), MediaType.APPLICATION_JSON).cacheControl(cc).build();
     } catch (Exception e) {
       return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
@@ -183,14 +184,14 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       ListAccess<Forum> listAccess = forumService.getForumsWithListAccess(filter);
       Forum[] forums = listAccess.load(offset, limit);
 
-      List<ForumJson> forumJsons = new ArrayList<ForumJson>();
+      List<Map<String, Object>> data = new ArrayList<Map<String,Object>>();
       for (int i = 0; i < forums.length; i++) {
-        ForumJson forumJson = new ForumJson(forums[i]);
-        forumJson.setHref(RestUtils.getRestUrl(FORUMS, forums[i].getId(), uriInfo.getPath()));
-        forumJsons.add(forumJson);
+        ForumEntity forumEntity = new ForumEntity(forums[i]);
+        forumEntity.setHref(RestUtils.getRestUrl(FORUMS, forums[i].getId(), uriInfo.getPath()));
+        data.add(forumEntity.getData());
       }
 
-      ResultForums result = new ResultForums(forumJsons);
+      ResultForums result = new ResultForums(data);
       result.setLimit(limit);
       result.setOffset(offset);
       if (returnSize) {
@@ -206,39 +207,40 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @Path("{id}/forums")
   @Produces(MediaType.APPLICATION_JSON)
   public Response createForum(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                                ForumJson forumData,
+                                ForumEntity forumData,
                                 @PathParam("id") String id) throws Exception {
     
     return null;
   }
   
-  public class ResultCategories extends AbstractListJson {
-    private List<CategoryJson> categories;
+  public class ResultCategories extends AbstractListEntity {
+    private List<Map<String, Object>> categories;
 
-    public ResultCategories(List<CategoryJson> jsons) {
-      setCategories(jsons);
+    public ResultCategories(List<Map<String, Object>> data) {
+      setCategories(data);
     }
 
-    public List<CategoryJson> getCategories() {
+    public List<Map<String, Object>> getCategories() {
       return categories;
     }
 
-    public void setCategories(List<CategoryJson> categories) {
+    public void setCategories(List<Map<String, Object>> categories) {
       this.categories = categories;
     }
   }
   
-  public class ResultForums extends AbstractListJson {
-    private List<ForumJson> forums;
+  public class ResultForums extends AbstractListEntity {
+    private List<Map<String, Object>> forums;
 
-    public ResultForums(List<ForumJson> jsons) {
-      forums = jsons;
+    public ResultForums(List<Map<String, Object>> data) {
+      setForums(data);
     }
 
-    public List<ForumJson> getForums() {
+    public List<Map<String, Object>> getForums() {
       return forums;
     }
-    public void setForums(List<ForumJson> forums) {
+
+    public void setForums(List<Map<String, Object>> forums) {
       this.forums = forums;
     }
   }
