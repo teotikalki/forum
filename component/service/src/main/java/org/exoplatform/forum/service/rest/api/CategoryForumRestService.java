@@ -31,6 +31,7 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
 import org.exoplatform.forum.service.rest.AbstractForumRest;
+import org.exoplatform.forum.service.rest.model.CategoryEntity;
 import org.exoplatform.forum.service.rest.model.ForumEntity;
 
 
@@ -57,7 +58,8 @@ public interface CategoryForumRestService extends AbstractForumRest {
   @Path("{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response updateCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                                      @PathParam("id") String id) throws Exception;
+                                      @PathParam("id") String id,
+                                      CategoryEntity json) throws Exception;
   
   @DELETE
   @Path("{id}")
@@ -92,4 +94,14 @@ public interface CategoryForumRestService extends AbstractForumRest {
   public Response createForum(@Context SecurityContext sc, @Context UriInfo uriInfo,
                                 ForumEntity forumData,
                                 @PathParam("id") String id) throws Exception;
+  
+  @GET
+  @Path("{id}/rss")
+  @Produces(MediaType.APPLICATION_XML)
+  public Response getRss(@Context SecurityContext sc, @Context UriInfo uriInfo,
+                          @QueryParam("fields") String fields,
+                          @QueryParam("returnSize") boolean returnSize,
+                          @QueryParam("offset") int offset,
+                          @QueryParam("limit") int limit,
+                          @PathParam("id") String id) throws Exception;
 }

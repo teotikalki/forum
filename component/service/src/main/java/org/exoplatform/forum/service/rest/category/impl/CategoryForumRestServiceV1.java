@@ -1,5 +1,6 @@
 package org.exoplatform.forum.service.rest.category.impl;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
+import org.exoplatform.commons.utils.CommonsUtils;
 import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.forum.service.Category;
 import org.exoplatform.forum.service.Forum;
@@ -104,7 +106,8 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
   @RolesAllowed("users")
   @Produces(MediaType.APPLICATION_JSON)
   public Response updateCategoryById(@Context SecurityContext sc, @Context UriInfo uriInfo,
-                                      @PathParam("id") String id) throws Exception {
+                                      @PathParam("id") String id,
+                                      CategoryEntity categoryEntity) throws Exception {
     try {
       String fields = getQueryValueFields(uriInfo);
       String authenticatedUser = getUserId(sc, uriInfo);
@@ -115,6 +118,8 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
       if (category == null || !isManagerCategory(authenticatedUser)) {
         return Response.status(Response.Status.UNAUTHORIZED).build();
       }
+      category.setCategoryName(categoryEntity.getData().get("name").toString());
+      forumService.saveCategory(category, false);
       
       CategoryEntity entity = new CategoryEntity(category);
       entity.setHref(RestUtils.getRestUrl(CATEGORIES, category.getId(), uriInfo.getPath()));
@@ -211,6 +216,33 @@ public class CategoryForumRestServiceV1 extends AbstractForumRestServiceImpl imp
                                 @PathParam("id") String id) throws Exception {
     
     return null;
+  }
+  
+  @GET
+  @Path("{id}/rss")
+  @Produces(MediaType.APPLICATION_XML)
+  public Response getRss(@Context SecurityContext sc, @Context UriInfo uriInfo,
+                          @QueryParam("fields") String fields,
+                          @QueryParam("returnSize") boolean returnSize,
+                          @QueryParam("offset") int offset,
+                          @QueryParam("limit") int limit,
+                          @PathParam("id") String id) throws Exception {
+    try {
+      String authenticatedUser = getUserId(sc, uriInfo);
+      
+      ForumService forumService = getForumService();
+      Category category = forumService.getCategory(id);
+      
+      if (category == null || ! hasCanViewCategory(category, authenticatedUser)) {
+        return Response.status(Status.UNAUTHORIZED).build();
+      }
+      
+      String domain = CommonsUtils.getCurrentDomain();
+      InputStream is = forumService.createForumRss(id, domain);
+      return Response.ok(is, MediaType.APPLICATION_XML).cacheControl(cc).build();
+    } catch (Exception e) {
+      return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
   }
   
   public class ResultCategories extends AbstractListEntity {

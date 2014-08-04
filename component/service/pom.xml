@@ -4,7 +4,7 @@
   <parent>
     <artifactId>forum-component</artifactId>
     <groupId>org.exoplatform.forum</groupId>
-    <version>4.1.x-forum-stabilization-SNAPSHOT</version>
+    <version>4.2.x-SNAPSHOT</version>
   </parent>
   <groupId>org.exoplatform.forum</groupId>
   <artifactId>forum-component-service</artifactId>
@@ -92,11 +92,6 @@
     <dependency>
       <groupId>org.exoplatform.forum</groupId>
       <artifactId>forum-forum-service</artifactId>
-    </dependency>
-    <!-- These dependency is required to compile but reported as useless by mvn dependency:analyze -->
-    <dependency>
-      <groupId>org.exoplatform.forum</groupId>
-      <artifactId>forum-answer-service</artifactId>
     </dependency>
     <!-- These dependency is required to compile but reported as useless by mvn dependency:analyze -->
     <dependency>
