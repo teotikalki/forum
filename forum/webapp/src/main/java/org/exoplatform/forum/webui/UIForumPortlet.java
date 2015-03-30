@@ -602,6 +602,11 @@ public class UIForumPortlet extends UIPortletApplication {
         list.add(topic.getOwner());
       if (topic.getIsClosed() || !topic.getIsActive() || !topic.getIsActiveByForum() || !topic.getIsApproved() || topic.getIsWaiting() || (!list.isEmpty() && !Utils.hasPermission(list, userBound)))
         return false;
+      
+      String[] listCanView = topic.getCanView();
+      if (listCanView.length > 0 && !Utils.hasPermission(Arrays.asList(listCanView), userBound)) {
+        return false;
+      }
     }
     return true;
   }

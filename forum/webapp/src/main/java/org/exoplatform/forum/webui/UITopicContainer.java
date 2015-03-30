@@ -158,6 +158,14 @@ public class UITopicContainer extends UIForumKeepStickPageIterator {
   public void setLogin(boolean isLogin) {
     this.isLogin = isLogin;
   }
+  
+  public boolean isCanView(Topic topic) {
+    String userId = getUserProfile().getUserId();
+    if (topic != null && userId != null && userId != "" && Arrays.asList(topic.getCanView()).size() > 0) {
+      return Arrays.asList(topic.getCanView()).contains(userId);
+    }
+    return true;
+  }
 
   public void setOrderBy(String orderBy) {
     this.strOrderBy = orderBy;
