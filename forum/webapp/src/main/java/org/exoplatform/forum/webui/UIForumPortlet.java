@@ -594,19 +594,18 @@ public class UIForumPortlet extends UIPortletApplication {
     }
     if (topic != null) {
       List<String> list = new ArrayList<String>();
-      list = ForumUtils.addArrayToList(list, topic.getCanView());
+      String[] listCanView = topic.getCanView();
+      if (listCanView.length > 0 && !Utils.hasPermission(Arrays.asList(listCanView), userBound)) {
+        return false;
+      }
+      list = ForumUtils.addArrayToList(list, listCanView);
       list = ForumUtils.addArrayToList(list, forum.getViewer());
       list = ForumUtils.addArrayToList(list, cate.getViewer());
 
       if (!list.isEmpty() && topic.getOwner() != null)
         list.add(topic.getOwner());
       if (topic.getIsClosed() || !topic.getIsActive() || !topic.getIsActiveByForum() || !topic.getIsApproved() || topic.getIsWaiting() || (!list.isEmpty() && !Utils.hasPermission(list, userBound)))
-        return false;
-      
-      String[] listCanView = topic.getCanView();
-      if (listCanView.length > 0 && !Utils.hasPermission(Arrays.asList(listCanView), userBound)) {
-        return false;
-      }
+        return false;            
     }
     return true;
   }
