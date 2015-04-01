@@ -605,7 +605,7 @@ public class UIForumPortlet extends UIPortletApplication {
       if (!list.isEmpty() && topic.getOwner() != null)
         list.add(topic.getOwner());
       if (topic.getIsClosed() || !topic.getIsActive() || !topic.getIsActiveByForum() || !topic.getIsApproved() || topic.getIsWaiting() || (!list.isEmpty() && !Utils.hasPermission(list, userBound)))
-        return false;            
+        return false;
     }
     return true;
   }

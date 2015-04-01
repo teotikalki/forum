@@ -286,79 +286,79 @@
 					String lastPostIdRead = "", linkProf, sendPrSms, viewPosted, viewThread;
 					for(topic in topics){
 					  if (uicomponent.isCanView(topic)) {
-  						postDate = topic.getLastPostDate();
-  						boolean isLockTopic = topic.getIsLock() ;
-  						if(!isLockTopic) isLockTopic = topic.getIsClosed() ;
-  						String topicId = topic.getId();
-  						lastPostIdRead = uicomponent.getLastPostIdReadOfTopic(topicId);
-  						long max_page = uicomponent.getSizePost(topic) ;
-  					 
-  						String topicTitle = topic.getTopicName();
-  						String topicBy = topic.getOwner();
-  						String postNewBy = topic.getLastPostBy() ;
-  						
-  						long lastAccess = userProfile.getLastTimeAccessTopic(topicId) ;
-  						String title = "";
-  						String iconTopicStatus = "" ;
-  						String titleTopicStatus = "";
-  						if(lastAccess < postDate.getTime()) {
-  							iconTopicStatus = "uiIconForumColorUnread";
-  							titleTopicStatus = _ctx.appRes("UIForumIconState.label.ForumNewPost");
-  							title = "titleBold";
-  						}
-  						
-  						String textHotTopic = "";
-  						if(topic.getPostCount() > 30) {
-  							textHotTopic = "textHotTopic";
-  						}
-  						
-  						String lastPostDate = TimeConvertUtils.convertXTimeAgo(topic.getLastPostDate(), (userProfile.getShortDateFormat() + ", " + userProfile.getTimeFormat()), setTime);					
-  						String titlePost = ForumUtils.getSubString(ForumUtils.getTitleInHTMLCode(topic.getDescription()), 101);
-  	
-  						int att = topic.getNumberAttachment() ;
-  						if(att < 0) att = 0;
-  						String attachment = String.valueOf(att);
-  	
-  						long postCount = topic.getPostCount();
-  						if(postCount < 0) postCount = 0;
-  	
-  						String postView = String.valueOf(topic.getViewCount());
-  						String number = "0";
-  	
-  						String iconStatusTopic = "";
-  						if(topic.getIsLock() || isLock) {
-  						 iconStatusTopic = "uiIconForumColorLockTiny uiIconForumLightGray";
-  						}
-  						if(topic.getIsClosed()) {
-  						 iconStatusTopic = "uiIconForumColorCloseTiny uiIconForumLightGray";
-  						}
-  	
-  						String approved = "" ;
-  						if(canEdit){
-  							if(topic.getIsWaiting()) approved = "<span style='white-space:nowrap;'> (<span style='color:#f77617;'>"+_ctx.appRes("UITopicContainer.label.TopicPendingCensor") ;
-  							if(isApproveTopic && !topic.getIsApproved()) {
-  								if(approved.length() > 0) approved = "<span style='white-space:nowrap;'> (<span style='color:#f77617;'>"+_ctx.appRes("UITopicContainer.label.TopicPending") ;
-  								else approved = "<span style='white-space:nowrap;'> (<span style='color:#f77617;'>"+_ctx.appRes("UITopicContainer.label.TopicPendingApproval") ;
-  							}
-  							if(!topic.getIsActive()) approved = "<span style='white-space:nowrap;'> (<span style='color:#f77617;'>"+_ctx.appRes("UITopicContainer.label.TopicInactivate");
-  							if(approved.length() > 0) approved = approved +"</span>)</span>";
-  						}
-  						
-  						String actionBookmark;
-  						if(uicomponent.isLogin){
-  							if(uicomponent.isWatching(topic.getPath())) {
-  								actionBookmark = uicomponent.event("AddBookMark",topicId) + ";" + uicomponent.event("UnWatch",topicId);
-  							} else {
-  								actionBookmark = uicomponent.event("AddBookMark",topicId) + ";" + uicomponent.event("AddWatching",topicId);
-  							}
-  						}
-  						actionBookmark += ";" + uicomponent.getRSSLink(topicId)+ "," + uicomponent.event("RSS", topicId).replace("javascript:","");
-  						String link = uicomponent.event("OpenTopic", (topicId+","+number + ",false"));
-  						String url = ForumUtils.createdForumLink(ForumUtils.TOPIC, topicId, false);
-  						String classSelect = "";
-  						if(checkeds.contains(topicId)){
-  							classSelect = "SelectedItem";
-  						}
+						postDate = topic.getLastPostDate();
+						boolean isLockTopic = topic.getIsLock() ;
+						if(!isLockTopic) isLockTopic = topic.getIsClosed() ;
+						String topicId = topic.getId();
+						lastPostIdRead = uicomponent.getLastPostIdReadOfTopic(topicId);
+						long max_page = uicomponent.getSizePost(topic) ;
+					 
+						String topicTitle = topic.getTopicName();
+						String topicBy = topic.getOwner();
+						String postNewBy = topic.getLastPostBy() ;
+						
+						long lastAccess = userProfile.getLastTimeAccessTopic(topicId) ;
+						String title = "";
+						String iconTopicStatus = "" ;
+						String titleTopicStatus = "";
+						if(lastAccess < postDate.getTime()) {
+							iconTopicStatus = "uiIconForumColorUnread";
+							titleTopicStatus = _ctx.appRes("UIForumIconState.label.ForumNewPost");
+							title = "titleBold";
+						}
+						
+						String textHotTopic = "";
+						if(topic.getPostCount() > 30) {
+							textHotTopic = "textHotTopic";
+						}
+						
+						String lastPostDate = TimeConvertUtils.convertXTimeAgo(topic.getLastPostDate(), (userProfile.getShortDateFormat() + ", " + userProfile.getTimeFormat()), setTime);					
+						String titlePost = ForumUtils.getSubString(ForumUtils.getTitleInHTMLCode(topic.getDescription()), 101);
+	
+						int att = topic.getNumberAttachment() ;
+						if(att < 0) att = 0;
+						String attachment = String.valueOf(att);
+	
+						long postCount = topic.getPostCount();
+						if(postCount < 0) postCount = 0;
+	
+						String postView = String.valueOf(topic.getViewCount());
+						String number = "0";
+	
+						String iconStatusTopic = "";
+						if(topic.getIsLock() || isLock) {
+						 iconStatusTopic = "uiIconForumColorLockTiny uiIconForumLightGray";
+						}
+						if(topic.getIsClosed()) {
+						 iconStatusTopic = "uiIconForumColorCloseTiny uiIconForumLightGray";
+						}
+	
+						String approved = "" ;
+						if(canEdit){
+							if(topic.getIsWaiting()) approved = "<span style='white-space:nowrap;'> (<span style='color:#f77617;'>"+_ctx.appRes("UITopicContainer.label.TopicPendingCensor") ;
+							if(isApproveTopic && !topic.getIsApproved()) {
+								if(approved.length() > 0) approved = "<span style='white-space:nowrap;'> (<span style='color:#f77617;'>"+_ctx.appRes("UITopicContainer.label.TopicPending") ;
+								else approved = "<span style='white-space:nowrap;'> (<span style='color:#f77617;'>"+_ctx.appRes("UITopicContainer.label.TopicPendingApproval") ;
+							}
+							if(!topic.getIsActive()) approved = "<span style='white-space:nowrap;'> (<span style='color:#f77617;'>"+_ctx.appRes("UITopicContainer.label.TopicInactivate");
+							if(approved.length() > 0) approved = approved +"</span>)</span>";
+						}
+						
+						String actionBookmark;
+						if(uicomponent.isLogin){
+							if(uicomponent.isWatching(topic.getPath())) {
+								actionBookmark = uicomponent.event("AddBookMark",topicId) + ";" + uicomponent.event("UnWatch",topicId);
+							} else {
+								actionBookmark = uicomponent.event("AddBookMark",topicId) + ";" + uicomponent.event("AddWatching",topicId);
+							}
+						}
+						actionBookmark += ";" + uicomponent.getRSSLink(topicId)+ "," + uicomponent.event("RSS", topicId).replace("javascript:","");
+						String link = uicomponent.event("OpenTopic", (topicId+","+number + ",false"));
+						String url = ForumUtils.createdForumLink(ForumUtils.TOPIC, topicId, false);
+						String classSelect = "";
+						if(checkeds.contains(topicId)){
+							classSelect = "SelectedItem";
+						}
 				%>
 				<tr>
 					<td class="center"><i class="$iconTopicStatus" rel="tooltip" data-placement="bottom" title="$titleTopicStatus"></i></td>
