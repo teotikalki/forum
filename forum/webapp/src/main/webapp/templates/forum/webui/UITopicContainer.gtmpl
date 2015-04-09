@@ -490,7 +490,7 @@
 				</tr>
 				<% 
 					}
-					if(rCNB == 0){
+					if(rCNB == 0 && uicomponent.isCanView(topic)){
 				%>
 					<tr>
 						<% if(canEdit){ %>

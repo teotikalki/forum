@@ -161,8 +161,21 @@ public class UITopicContainer extends UIForumKeepStickPageIterator {
   
   public boolean isCanView(Topic topic) {
     String userId = getUserProfile().getUserId();
-    if (topic != null && userId != null && userId != "" && Arrays.asList(topic.getCanView()).size() > 0) {
-      return Arrays.asList(topic.getCanView()).contains(userId);
+    String[] createTopicRole = this.forum.getCreateTopicRole();
+    boolean isAccessibleToGroup = false;
+    try {
+      isAccessibleToGroup = ForumServiceUtils.hasPermission(createTopicRole, userId);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    String[] canViewList = topic.getCanView();
+    if (topic != null && userId != null && userId != "" && Arrays.asList(canViewList).size() > 0) {
+      if (Arrays.toString(canViewList).startsWith("[/")) {
+        return isAccessibleToGroup;
+      } else {
+        return Arrays.asList(topic.getCanView()).contains(userId);
+      }
     }
     return true;
   }
