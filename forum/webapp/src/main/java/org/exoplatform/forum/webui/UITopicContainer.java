@@ -166,7 +166,7 @@ public class UITopicContainer extends UIForumKeepStickPageIterator {
     try {
       isAccessibleToGroup = ForumServiceUtils.hasPermission(createTopicRole, userId);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("Failed to check if user " + userId + " has the right to access topic. \nCaused by: " + e.getCause());
     }
 
     String[] canViewList = topic.getCanView();
