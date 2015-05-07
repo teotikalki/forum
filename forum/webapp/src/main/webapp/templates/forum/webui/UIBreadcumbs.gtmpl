@@ -1,6 +1,7 @@
 <%	
 	import org.exoplatform.forum.ForumUtils;
 	import org.exoplatform.forum.ForumSessionUtils;
+	import org.apache.commons.lang.StringEscapeUtils;
 	uicomponent.setIsUseAjax();
 %>
 <div class="uiBreadcumbs uiGrayLightBox uiForumBreadCrumb clearfix" id="$uicomponent.id">
@@ -28,6 +29,7 @@
 						if(namePath.equals(ForumUtils.FIELD_SEARCHFORUM_LABEL)) {
 							namePath = _ctx.appRes("UIBreadcumbs.label.SearchForums");
 						}
+						namePath = StringEscapeUtils.unescapeHtml(namePath);
 						String	name = ForumUtils.getSubString(namePath, 18);
 						namePath = namePath.replaceAll("'","&#39;").replaceAll('"',"&#34;").replaceAll(" ","&#32;") ;
 						if(t+1 < uicomponent.getMaxPath()) {
