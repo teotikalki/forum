@@ -323,7 +323,20 @@ public class ForumServiceImpl implements ForumService, Startable {
   public List<Category> getCategories() {
     return storage.getCategories();
   }
-
+  
+   /**
+   * {@inheritDoc}
+   */
+  public List<Category> getCategoriesForumCreation() {
+   List<Category> categoriesDisplay = new ArrayList<Category>();
+   List<Category> categories = storage.getCategories();
+   for(Category category : categories ){
+     if(!(category.getName().equals("spaces"))){
+        categoriesDisplay.add(category);
+      }
+    }
+   return categoriesDisplay;
+  }
   /**
    * {@inheritDoc}
    */
