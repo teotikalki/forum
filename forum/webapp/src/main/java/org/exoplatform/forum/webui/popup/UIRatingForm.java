@@ -16,11 +16,6 @@
  ***************************************************************************/
 package org.exoplatform.forum.webui.popup;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.forum.ForumUtils;
 import org.exoplatform.forum.common.UserHelper;
@@ -37,6 +32,11 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.event.EventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
@@ -108,7 +108,7 @@ public class UIRatingForm extends BaseForumForm implements UIPopupComponent {
       String[] Vote = topic.getUserVoteRating();
       int k = Vote.length;
       Double voteRating = topic.getVoteRating();
-      voteRating = (voteRating * k + Integer.parseInt(vote)) / (k + 1);
+      voteRating = Double.parseDouble(vote);
       String[] temp = new String[k + 1];
       System.arraycopy(Vote, 0, temp, 0, k);
       temp[k] = userName+":"+vote;
