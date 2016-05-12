@@ -947,7 +947,19 @@ public class ForumServiceTestCase extends BaseForumServiceTestCase {
     messageInfo = (SendMessageInfo) messages.get(2);
     assertEquals(1, messageInfo.getEmailAddresses().size());
   }
-  
+
+  public void testCategoriesList() throws Exception {
+    String cateId = Utils.CATEGORY + "spaces";
+    Category categorySpace = createCategory(cateId);
+    categorySpace.setCategoryName("spaces");
+    forumService_.saveCategory(categorySpace, true);
+    Category category = createCategory(getId(Utils.CATEGORY));
+    forumService_.saveCategory(category, true);
+    List<Category> categories = forumService_.getCategories(true);
+    assertFalse(categories.contains(categorySpace));
+    assertTrue(categories.contains(category));
+  }
+
   private Group createGroup(Group parent, String groupName) throws Exception {
     GroupHandler groupHandler = UserHelper.getGroupHandler();
     String parentId = (parent == null) ? "" : parent.getId() + "/";

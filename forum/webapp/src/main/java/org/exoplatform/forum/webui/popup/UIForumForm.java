@@ -144,7 +144,7 @@ public class UIForumForm extends BaseForumForm implements UIPopupComponent {
     forum = new Forum();
     List<SelectItemOption<String>> list = new ArrayList<SelectItemOption<String>>();
     if (ForumUtils.isEmpty(categoryId)) {
-      List<Category> categorys = getForumService().getCategoriesForumCreation();
+      List<Category> categorys = getForumService().getCategories(true);
       for (Category category : categorys) {
         list.add(new SelectItemOption<String>(category.getCategoryName(), category.getId()));
       }

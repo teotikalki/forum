@@ -224,7 +224,7 @@ public class UIForumActionBar extends UIContainer {
   static public class AddForumActionListener extends EventListener<UIForumActionBar> {
     public void execute(Event<UIForumActionBar> event) throws Exception {
       UIForumActionBar uiActionBar = event.getSource();
-      if (uiActionBar.forumService.getCategoriesForumCreation().size() > 0) {
+      if (uiActionBar.forumService.getCategories(true).size() > 0) {
         UIForumPortlet forumPortlet = uiActionBar.getParent();
         UIPopupAction popupAction = forumPortlet.getChild(UIPopupAction.class);
         UIPopupContainer popupContainer = popupAction.createUIComponent(UIPopupContainer.class, null, null);

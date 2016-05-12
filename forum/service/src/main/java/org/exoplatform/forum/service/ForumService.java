@@ -90,12 +90,12 @@ public interface ForumService extends ForumServiceLegacy {
   List<Category> getCategories();
 
   /**
-   * Gets categories in Forums without considering the category Spaces .
-   *
-   * @return Categories.
-   * @LevelAPI Platform
-   */
-  List<Category> getCategoriesForumCreation();
+  * Gets the list of categories in Forums without the category Spaces .
+  *
+  * @return Categories.
+  * @LevelAPI Platform
+  */
+  List<Category> getCategories(boolean withoutSpaces);
   
   /**
    * 

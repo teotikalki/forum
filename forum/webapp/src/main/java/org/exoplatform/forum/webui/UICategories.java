@@ -191,7 +191,7 @@ public class UICategories extends UIContainer {
 
   private List<Category> getCategoryList() throws Exception {
     try {
-      categoryList = forumService.getCategories();
+      categoryList = forumService.getCategories(true);
     } catch (Exception e) {
       categoryList = new ArrayList<Category>();
     }
