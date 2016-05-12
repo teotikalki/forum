@@ -147,9 +147,7 @@ import org.exoplatform.services.jcr.util.IdGenerator;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.mail.Message;
-import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
-import org.exoplatform.services.organization.UserHandler;
 import org.exoplatform.services.scheduler.JobInfo;
 import org.exoplatform.services.scheduler.JobSchedulerService;
 import org.exoplatform.services.scheduler.PeriodInfo;
@@ -3895,15 +3893,12 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
         List<String> userListCategory = catReader.list(EXO_USER_WATCHING, new ArrayList<String>());
         List<String> userListForum = forumReader.list(EXO_USER_WATCHING, new ArrayList<String>());
         List<String> userListTopic = topicReader.list(EXO_USER_WATCHING, new ArrayList<String>());
-        OrganizationService organizationService = (OrganizationService) ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(OrganizationService.class);
-        UserHandler userHandler = organizationService.getUserHandler();
-        User postUser = userHandler.findUserByName(post.getOwner());
         // validate permission and remove duplicate email
         // Watched on category
         int i = 0;
         List<String> removeEmail = new ArrayList<String>();
         for (String user : userListCategory) {
-          if(!canReceiveNotification(topicNode, user, postUser.getUserName())) {
+          if(!canReceiveNotification(topicNode, user, post.getOwner())) {
             removeEmail.add(emailListCategory.get(i));
           }
           ++i;
@@ -3914,7 +3909,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
         i = 0;
         for (String user : userListForum) {
           if(userListCategory.contains(user)
-              || !canReceiveNotification(topicNode, user, postUser.getUserName())) {
+              || !canReceiveNotification(topicNode, user, post.getOwner())) {
             removeEmail.add(emailListForum.get(i));
           }
           ++i;
@@ -3926,7 +3921,7 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
         for (String user : userListTopic) {
           if(userListCategory.contains(user)
               || userListForum.contains(user)
-              || !canReceiveNotification(topicNode, user, postUser.getUserName())) {
+              || !canReceiveNotification(topicNode, user, post.getOwner())) {
             removeEmail.add(emailListTopic.get(i));
           }
           ++i;
