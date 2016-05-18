@@ -3770,14 +3770,18 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
       sendNotificationManager.addTask(new SendNotificationTask(nodePath, topic, post, messageBuilder, isApprovePost));
     }
   }
-  
-  private boolean canReceiveNotification(Node topicNode, String user, String author) throws Exception {
-    //if something is wrong then don't send notification
-    if(user==null){
-      return false;
-    }
+
+  /**
+   * Check if a specific User have the permission to receive the email notification
+   * 
+   * @param topicNode the underlying watched topic 
+   * @param user the user watching the topic
+   * @param postAuthor the owner of the new post
+   * @throws Exception
+   */
+  private boolean canReceiveNotification(Node topicNode, String user, String postAuthor) throws Exception {
     //if the watching user is the one who replied to the topic then don't send notification
-    if(user.equals(author)){
+    if(user==null || user.equals(postAuthor)){
       return false;
     }
     Node forumNode = topicNode.getParent();
