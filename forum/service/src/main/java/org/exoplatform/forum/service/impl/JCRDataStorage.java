@@ -3378,8 +3378,8 @@ public class JCRDataStorage implements DataStorage, ForumNodeTypes {
     SessionProvider sProvider = CommonUtils.createSystemProvider();
     try {
       Node categoryHome = getCategoryHome(sProvider);
-      Node postNode;
-      if (postId.lastIndexOf("/") > 0) {
+      Node postNode;      
+      if (postId.lastIndexOf("/") > 0 || (categoryId.isEmpty() && forumId.isEmpty() && topicId.isEmpty())) {
         if (postId.indexOf(categoryHome.getName()) < 0)
           postId = categoryHome.getPath() + "/" + postId;
         postNode = (Node) categoryHome.getSession().getItem(postId);
