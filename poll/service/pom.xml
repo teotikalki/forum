@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>forum-forum</artifactId>
+    <artifactId>forum-poll</artifactId>
     <groupId>org.exoplatform.forum</groupId>
     <version>4.4.x-open-in-emails-SNAPSHOT</version>
   </parent>
-  <artifactId>forum-forum-service</artifactId>
-  <packaging>jar</packaging>
-  <name>Forum Forum service</name>
+  <artifactId>forum-poll-service</artifactId>
+  <name>Forum Poll Service</name>
   <dependencies>
     <dependency>
       <groupId>commons-lang</groupId>
@@ -24,19 +23,7 @@
     </dependency>
     <dependency>
       <groupId>org.exoplatform.commons</groupId>
-      <artifactId>commons-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.exoplatform.commons</groupId>
-      <artifactId>commons-comet-service</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.exoplatform.commons</groupId>
       <artifactId>commons-component-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.exoplatform.commons</groupId>
-      <artifactId>commons-component-upgrade</artifactId>
     </dependency>
     <dependency>
       <groupId>org.exoplatform.core</groupId>
@@ -53,6 +40,10 @@
     <dependency>
       <groupId>org.exoplatform.forum</groupId>
       <artifactId>forum-component-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.exoplatform.forum</groupId>
+      <artifactId>forum-component-rendering</artifactId>
     </dependency>
     <!-- Log4J is required by wikbook to compile but we don't want to propagate it -->
     <dependency>
@@ -104,20 +95,6 @@
     </dependency>
     <dependency>
       <groupId>org.exoplatform.kernel</groupId>
-      <artifactId>exo.kernel.component.cache</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.exoplatform.kernel</groupId>
-      <artifactId>exo.kernel.component.common</artifactId>
-      <exclusions>
-      	<exclusion>
-          <groupId>javax.activation</groupId>
-          <artifactId>activation</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.exoplatform.kernel</groupId>
       <artifactId>exo.kernel.container</artifactId>
       <exclusions>
       	<exclusion>
@@ -125,10 +102,6 @@
           <artifactId>javax.servlet-api</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.exoplatform.ws</groupId>
-      <artifactId>exo.ws.frameworks.json</artifactId>
     </dependency>
     <dependency>
       <groupId>org.exoplatform.ws</groupId>
@@ -141,18 +114,14 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.gatein.common</groupId>
-      <artifactId>common-logging</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.gatein.portal</groupId>
       <artifactId>exo.portal.component.portal</artifactId>
       <exclusions>
-      	<exclusion>
-      		<groupId>log4j</groupId>
-      		<artifactId>log4j</artifactId>
-      	</exclusion>
-      	<exclusion>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+        <exclusion>
           <groupId>javax.xml.stream</groupId>
           <artifactId>stax-api</artifactId>
         </exclusion>
@@ -167,20 +136,6 @@
         <exclusion>
           <groupId>javax.activation</groupId>
           <artifactId>activation</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.gatein.portal</groupId>
-      <artifactId>exo.portal.component.web.controller</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.quartz-scheduler</groupId>
-      <artifactId>quartz</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>commons-logging</artifactId>
-          <groupId>commons-logging</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -220,49 +175,27 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- Chromattic -->
     <dependency>
       <groupId>org.chromattic</groupId>
       <artifactId>chromattic.api</artifactId>
     </dependency>
+    <!-- Configuration test case -->
+    <!-- Chromattic -->
     <dependency>
       <groupId>org.chromattic</groupId>
       <artifactId>chromattic.apt</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.chromattic</groupId>
-      <artifactId>chromattic.common</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.chromattic</groupId>
-      <artifactId>chromattic.core</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.chromattic</groupId>
       <artifactId>chromattic.ext</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.chromattic</groupId>
-      <artifactId>chromattic.metamodel</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.chromattic</groupId>
       <artifactId>chromattic.spi</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.exoplatform.commons</groupId>
@@ -270,9 +203,20 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.exoplatform.forum</groupId>
+      <artifactId>forum-forum-service</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.exoplatform.ws</groupId>
       <artifactId>exo.ws.testframework</artifactId>
       <scope>test</scope>
+      <exclusions>
+      	<exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>javax.servlet-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.gatein.portal</groupId>
@@ -302,11 +246,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <scope>test</scope>
@@ -325,8 +264,8 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
             <includes>
-              <include>**/NoContainerTestSuite.java</include>
-              <include>**/BaseForumTestSuite.java</include>
+              <include>**/UtilsTestCase.java</include>
+              <include>**/PollTestSuite.java</include>
             </includes>
           </configuration>
         </plugin>

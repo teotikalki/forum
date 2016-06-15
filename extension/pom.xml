@@ -6,13 +6,12 @@
     <groupId>org.exoplatform.forum</groupId>
     <version>4.4.x-open-in-emails-SNAPSHOT</version>
   </parent>
-  <artifactId>forum-component</artifactId>
+  <artifactId>forum-extension</artifactId>
   <packaging>pom</packaging>
-  <name>Forum Components</name>
+  <name>Forum Extension</name>
+  <description>KS Extension Root Pom</description>
   <modules>
-    <module>common</module>
-    <module>rendering</module>
-    <module>bbcode</module>
-    <module>statistics</module>
+    <module>config</module>
+    <module>webapp</module>
   </modules>
 </project>
