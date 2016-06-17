@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.jcr.PathNotFoundException;
 
+import org.exoplatform.commons.utils.HTMLSanitizer;
 import org.exoplatform.commons.utils.StringCommonUtils;
 import org.exoplatform.forum.ForumUtils;
 import org.exoplatform.forum.bbcode.core.ExtendedBBCodeProvider;
@@ -434,12 +435,12 @@ public class UITopicForm extends BaseForumForm {
             String link = ForumUtils.createdForumLink(ForumUtils.TOPIC, topicNew.getId(), false);
             //
             String userName = userProfile.getUserId();
-            topicTitle = StringCommonUtils.encodeScriptMarkup(topicTitle);
+            topicTitle = HTMLSanitizer.sanitize(topicTitle);
             topicNew.setTopicName(topicTitle);
             topicNew.setModifiedBy(userName);
             topicNew.setModifiedDate(currentDate);
             //encode XSS script
-            message = StringCommonUtils.encodeScriptMarkup(message);
+            message = HTMLSanitizer.sanitize(message);
             topicNew.setDescription(message);
             topicNew.setLink(link);
             if (whenNewPost) {
@@ -474,7 +475,7 @@ public class UITopicForm extends BaseForumForm {
             messageBuilder.setLink(link);
             if (!ForumUtils.isEmpty(uiForm.topicId)) {
               topicNew.setId(uiForm.topicId);
-              editReason = StringCommonUtils.encodeScriptMarkup(editReason);
+              editReason = HTMLSanitizer.sanitize(editReason);
               topicNew.setEditReason(editReason);
               try {
                 uiForm.getForumService().saveTopic(uiForm.categoryId, uiForm.forumId, topicNew, false, false, messageBuilder);
